@@ -42,10 +42,12 @@
 .btn-secondary {
     background-color: var(--color-secondary);
     color: var(--color-primary);
+    border: 2px solid transparent;
 }
 
 .btn-secondary:hover {
-    background-color: #e2e2e2;
+    background-color: var(--color-secondary);
+    border-color: var(--color-primary);
 }
 
 .btn-ghost {
@@ -143,6 +145,8 @@
 .hero-image-wrapper {
     aspect-ratio: 4/3;
     width: 100%;
+    margin-bottom: 10px;
+    /* fine-tuning baseline offset */
 }
 
 @media (min-width: 1024px) {
