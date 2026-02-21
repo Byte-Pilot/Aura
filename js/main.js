@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenuBtn.addEventListener('click', () => {
       const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
       mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
-      
+
       // Toggle a utility class instead of inline styles for cleaner scaling
       if (!isExpanded) {
         navLinksContainer.style.display = 'flex';
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinksContainer.style.left = '0';
         navLinksContainer.style.right = '0';
         navLinksContainer.style.backgroundColor = 'var(--color-background)';
-        navLinksContainer.style.padding = 'var(--space-4)';
+        navLinksContainer.style.padding = 'var(--space-1)';
         navLinksContainer.style.boxShadow = 'var(--shadow-soft)';
       } else {
         navLinksContainer.style.display = '';
@@ -29,23 +29,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Smooth Scrolling for internal anchors
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      
-      // Skip for empty hash (#)
-      if (targetId === '#') return;
-      
-      const targetElement = document.querySelector(targetId);
-      
-      if (targetElement) {
-        e.preventDefault();
-        targetElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    });
-  });
+  // Native CSS scroll-behavior smooth is used instead
 });
