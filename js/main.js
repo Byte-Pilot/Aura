@@ -100,4 +100,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const section = document.getElementById(id);
     if (section) observer.observe(section);
   });
+
+  // === Apartment Filter Tabs ===
+  const tabBtns = document.querySelectorAll('.tabs-nav .tab-btn');
+  const apartmentCards = document.querySelectorAll('#apartment-list [data-category]');
+
+  const categoryMap = {
+    'Все': null,
+    'Вид на море': 'sea',
+    'Вид на горы': 'mountain',
+  };
+
+  function filterCards(category) {
+    apartmentCards.forEach(card => {
+      if (!category || card.dataset.category === category) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterCards(categoryMap[btn.textContent.trim()]);
+    });
+  });
 });
