@@ -29,5 +29,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Native CSS scroll-behavior smooth is used instead
+  // === Active Nav Link on Scroll ===
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  // Build a map: sectionId -> navLink (preserving DOM order)
+  const sectionMap = new Map();
+  navLinks.forEach(link => {
+    const id = link.getAttribute('href').slice(1);
+    const section = document.getElementById(id);
+    if (section) sectionMap.set(id, link);
+  });
+
+  const visibleSections = new Set();
+  let isScrollingByClick = false; // freeze observer during click-triggered scroll
+  let scrollEndTimer = null;
+
+  function setActiveLink(link) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (link) link.classList.add('active');
+  }
+
+  // When clicking a nav link — set active immediately and freeze observer
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const id = link.getAttribute('href').slice(1);
+      if (document.getElementById(id)) {
+        setActiveLink(link);
+        isScrollingByClick = true;
+
+        // Unfreeze when scroll comes to rest
+        clearTimeout(scrollEndTimer);
+        const onScroll = () => {
+          clearTimeout(scrollEndTimer);
+          scrollEndTimer = setTimeout(() => {
+            isScrollingByClick = false;
+            window.removeEventListener('scroll', onScroll);
+          }, 150);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+    });
+  });
+
+  const headerHeight = document.querySelector('.site-header')?.offsetHeight ?? 72;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (isScrollingByClick) return; // frozen during click scroll
+
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleSections.add(entry.target.id);
+      } else {
+        visibleSections.delete(entry.target.id);
+      }
+    });
+
+    // Activate the topmost visible section (DOM order)
+    let activeId = null;
+    sectionMap.forEach((link, id) => {
+      if (visibleSections.has(id) && activeId === null) activeId = id;
+    });
+
+    if (activeId) setActiveLink(sectionMap.get(activeId));
+  }, {
+    threshold: 0,
+    rootMargin: `-${headerHeight}px 0px -50% 0px`
+  });
+
+  sectionMap.forEach((link, id) => {
+    const section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
 });

@@ -13,6 +13,7 @@
   /* Using Inter for body and Plus Jakarta Sans for a slightly more rounded, geometric heading style */
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-family-heading: 'Plus Jakarta Sans', var(--font-family-sans);
+  --font-family-section-title: 'Montserrat', var(--font-family-heading);
 
   /* Fluid Typographic Scale */
   --font-size-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
