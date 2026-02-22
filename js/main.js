@@ -1,10 +1,6 @@
 /* js/main.js */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile Menu — now handled by the generic nav-dropdown trigger logic below.
-  // The burger button (.mobile-menu-btn) is a .nav-dropdown__trigger inside
-  // .mobile-nav-dropdown, so no extra code is needed here.
-
   // === Active Nav Link on Scroll ===
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
@@ -146,5 +142,65 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-});
 
+  // === Lightbox Gallery ===
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
+  const galleryItems = document.querySelectorAll('.lightbox-trigger');
+
+  if (lightbox && galleryItems.length > 0) {
+    let currentIndex = 0;
+    const images = Array.from(galleryItems).map(item => item.querySelector('img').src);
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImg.src = images[currentIndex];
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      lightboxImg.src = images[currentIndex];
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      lightboxImg.src = images[currentIndex];
+    }
+
+    // Add click events to gallery items
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => openLightbox(index));
+    });
+
+    // Controls
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+
+    // Close when clicking outside image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+    });
+  }
+});

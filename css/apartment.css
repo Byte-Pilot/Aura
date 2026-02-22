@@ -92,21 +92,26 @@
 .gallery-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-4);
+    gap: var(--space-2);
+    /* Reduced gap to make it look like a unified collage */
     margin-bottom: var(--space-12);
     border-radius: var(--radius-xl);
     overflow: hidden;
+    height: auto;
 }
 
 @media (min-width: 768px) {
     .gallery-grid {
         grid-template-columns: 2fr 1fr;
         height: 500px;
+        /* Slight increase to balance aspect ratios */
     }
 }
 
 .gallery-main {
-    height: 250px;
+    height: 300px;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -119,20 +124,38 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Reverting to cover for a clean block without borders */
     display: block;
+    transition: transform var(--transition-normal);
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.02);
 }
 
 .gallery-side {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    gap: var(--space-2);
+    /* Match outer grid gap */
 }
 
 @media (min-width: 768px) {
     .gallery-side {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
+        /* Important: minmax(0, 1fr) prevents items from overflowing their track height */
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+        height: 100%;
     }
+}
+
+.gallery-side-item {
+    cursor: pointer;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    height: 100%;
+    min-height: 0;
+    /* Prevents overflow pushing the grid item apart */
 }
 
 .gallery-side img {
@@ -140,6 +163,106 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform var(--transition-normal);
+}
+
+/* --- Lightbox Modal --- */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+}
+
+.lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 10px;
+    line-height: 1;
+}
+
+.lightbox-prev,
+.lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast);
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox-prev {
+    left: -70px;
+}
+
+.lightbox-next {
+    right: -70px;
+}
+
+@media (max-width: 768px) {
+    .lightbox-prev {
+        left: 10px;
+    }
+
+    .lightbox-next {
+        right: 10px;
+    }
+
+    .lightbox-close {
+        right: 10px;
+        top: -50px;
+    }
 }
 
 /* --- Apartment Layout --- */
