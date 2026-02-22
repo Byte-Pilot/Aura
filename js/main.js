@@ -1,33 +1,9 @@
 /* js/main.js */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile Menu Toggle (Foundation for responsiveness)
-  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-  const navLinksContainer = document.querySelector('.nav-links');
-
-  if (mobileMenuBtn && navLinksContainer) {
-    mobileMenuBtn.addEventListener('click', () => {
-      const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
-      mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
-
-      // Toggle a utility class instead of inline styles for cleaner scaling
-      if (!isExpanded) {
-        navLinksContainer.style.display = 'flex';
-        navLinksContainer.style.flexDirection = 'column';
-        navLinksContainer.style.position = 'absolute';
-        navLinksContainer.style.top = '100%';
-        navLinksContainer.style.left = '0';
-        navLinksContainer.style.right = '0';
-        navLinksContainer.style.backgroundColor = 'var(--color-background)';
-        navLinksContainer.style.padding = 'var(--space-1)';
-        navLinksContainer.style.boxShadow = 'var(--shadow-soft)';
-      } else {
-        navLinksContainer.style.display = '';
-        navLinksContainer.style.flexDirection = '';
-        navLinksContainer.style.position = '';
-      }
-    });
-  }
+  // Mobile Menu — now handled by the generic nav-dropdown trigger logic below.
+  // The burger button (.mobile-menu-btn) is a .nav-dropdown__trigger inside
+  // .mobile-nav-dropdown, so no extra code is needed here.
 
   // === Active Nav Link on Scroll ===
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
@@ -128,4 +104,47 @@ document.addEventListener('DOMContentLoaded', () => {
       filterCards(categoryMap[btn.textContent.trim()]);
     });
   });
+
+  // === "Еще" Dropdown Toggle ===
+  const dropdownTriggers = document.querySelectorAll('.nav-dropdown__trigger');
+
+  dropdownTriggers.forEach(trigger => {
+    const menu = trigger.nextElementSibling;
+    if (!menu) return;
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = menu.classList.contains('is-open');
+
+      // Close any other open dropdowns first
+      document.querySelectorAll('.nav-dropdown__menu.is-open').forEach(m => {
+        m.classList.remove('is-open');
+        m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        menu.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-dropdown__menu.is-open').forEach(m => {
+      m.classList.remove('is-open');
+      m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close dropdown on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.nav-dropdown__menu.is-open').forEach(m => {
+        m.classList.remove('is-open');
+        m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 });
+

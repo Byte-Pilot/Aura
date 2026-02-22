@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги — AURA Апарт-отель в Алуште</title>
+    <meta name="description"
+        content="Дополнительные услуги апарт-отеля AURA в Алуште: трансфер, доставка, сюрпризы и экскурсии по Крыму.">
+
+    <!-- Styling Foundation -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Temporary SVG Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E">
+
+
+</head>
+
+<body>
+
+    <!-- === HEADER (same as index.html) === -->
+    <header class="site-header">
+        <div class="container flex justify-between items-center">
+
+            <!-- Brand Logo -->
+            <a href="index.html#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                </svg>
+                <span
+                    style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav-links">
+                <a href="index.html#hero">Главная</a>
+                <a href="index.html#apartments">Апартаменты</a>
+                <a href="index.html#about">О комплексе</a>
+                <a href="index.html#location">Расположение</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown__trigger flex items-center gap-1" aria-expanded="false"
+                        aria-haspopup="true">Еще
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu" role="menu">
+                        <a href="services.html" class="nav-dropdown__item active" role="menuitem">Услуги</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Правила пребывания</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Auth and Actions -->
+            <div class="flex items-center gap-4">
+                <a href="#login" class="btn-ghost" style="display: none;">Личный кабинет</a>
+                <a href="https://t.me/" target="_blank" class="btn btn-primary">Связаться</a>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="nav-dropdown mobile-nav-dropdown" style="display: none;">
+                    <button class="mobile-menu-btn nav-dropdown__trigger" aria-expanded="false"
+                        aria-label="Toggle navigation menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu mobile-nav-menu" role="menu">
+                        <a href="index.html#hero" class="nav-dropdown__item" role="menuitem">Главная</a>
+                        <a href="index.html#apartments" class="nav-dropdown__item" role="menuitem">Апартаменты</a>
+                        <a href="index.html#about" class="nav-dropdown__item" role="menuitem">О комплексе</a>
+                        <a href="index.html#location" class="nav-dropdown__item" role="menuitem">Расположение</a>
+                        <a href="services.html" class="nav-dropdown__item active" role="menuitem">Услуги</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Правила пребывания</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <!-- === SERVICES PAGE CONTENT === -->
+        <section class="services-section">
+            <div class="container">
+
+                <!-- Hero text -->
+                <div class="services-hero">
+                    <h1>Наши услуги</h1>
+                    <p>Мы позаботимся о каждой детали вашего отдыха — от встречи в аэропорту до незабываемых впечатлений
+                        по всему Крыму.</p>
+                </div>
+
+                <!-- Cards -->
+                <div class="services-grid">
+
+                    <!-- ── Card 1: Трансфер ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2" />
+                                <circle cx="7.5" cy="17.5" r="2.5" />
+                                <circle cx="17.5" cy="17.5" r="2.5" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Трансфер</h2>
+                            <p>Комфортная поездка от Симферополя прямо к апартаментам. Стоимость 3 000 ₽. Вас встретят
+                                на
+                                месте и сопроводят до самой двери.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 2: Доставка ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 10V6a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 6v12a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 18v-4" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" y1="22.08" x2="12" y2="12" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Доставка</h2>
+                            <p>Мы привезём цветы или подарки прямо к вашему номеру, чтобы отдых был по-настоящему
+                                беззаботным.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 3: Женщина из торта ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a5 5 0 0 1 5 5c0 2-1.5 3.5-5 6-3.5-2.5-5-4-5-6a5 5 0 0 1 5-5z" />
+                                <path d="M12 13v9" />
+                                <path d="M5 22h14" />
+                                <path d="M8 19l4-2 4 2" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Женщина из торта</h2>
+                            <p>Незабываемый сюрприз для особых случаев: праздник начинается с яркой и оригинальной
+                                подачи!</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 4: Экскурсии по Крыму ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+                                <line x1="9" y1="3" x2="9" y2="18" />
+                                <line x1="15" y1="6" x2="15" y2="21" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Экскурсии по Крыму</h2>
+                            <p>Откройте живописные уголки Крыма с комфортом — от горных троп до морских бухт.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- === FOOTER === -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+
+            <!-- Brand & Desc -->
+            <div class="footer-brand">
+                <a href="index.html#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                    </svg>
+                    <span
+                        style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+                </a>
+                <p class="footer-desc mt-4">
+                    Забронируйте идеальные апартаменты для отдыха в Алуште в комплексе Аура. Комфортные номера у моря
+                    напрямую от собственника.
+                </p>
+                <div class="footer-socials mt-6">
+                    <a href="https://t.me/" target="_blank" aria-label="Telegram" class="footer-social-icon">
+                        <img src="assets/icony/telegram.png" alt="Telegram"
+                            style="width: 32px; height: 32px; object-fit: contain;">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Column 1 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">НАВИГАЦИЯ</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#about">О комплексе</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">ДОКУМЕНТЫ</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Апарт-отель «Aura». Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+    <!-- Responsive fixes (same as index.html) -->
+    <style>
+        @media (min-width: 768px) {
+            .btn-ghost[href="#login"] {
+                display: inline-flex !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .mobile-nav-dropdown {
+                display: inline-flex !important;
+            }
+        }
+    </style>
+</body>
+
+</html>

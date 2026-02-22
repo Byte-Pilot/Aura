@@ -26,7 +26,7 @@
     <div class="container flex justify-between items-center">
 
       <!-- Brand Logo -->
-      <a href="/" class="logo flex items-center gap-2" aria-label="Homely Homepage">
+      <a href="#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
         </svg>
@@ -40,12 +40,19 @@
         <a href="#apartments">Апартаменты</a>
         <a href="#about">О комплексе</a>
         <a href="#location">Расположение</a>
-        <a href="#more" class="flex items-center gap-1">Еще
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-        </a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown__trigger flex items-center gap-1" aria-expanded="false" aria-haspopup="true">Еще
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="nav-dropdown__menu" role="menu">
+            <a href="services.html" class="nav-dropdown__item" role="menuitem">Услуги</a>
+            <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+            <a href="#" class="nav-dropdown__item" role="menuitem">Правила пребывания</a>
+          </div>
+        </div>
       </nav>
 
       <!-- Auth and Actions -->
@@ -53,15 +60,26 @@
         <!-- Hidden on too small screens natively using flex gap and avoiding break, 
              on mobile this could move to hamburger. Keeping inline for desktop view -->
         <a href="#login" class="btn-ghost" style="display: none;">Личный кабинет</a>
-        <a href="#contact" class="btn btn-primary">Связаться</a>
+        <a href="https://t.me/" target="_blank" class="btn btn-primary">Связаться</a>
 
         <!-- Mobile Menu Toggle Button (Visible only on small screens < 1024) -->
-        <button class="mobile-menu-btn" aria-expanded="false" aria-label="Toggle navigation menu"
-          style="display: none;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </button>
+        <div class="nav-dropdown mobile-nav-dropdown" style="display: none;">
+          <button class="mobile-menu-btn nav-dropdown__trigger" aria-expanded="false"
+            aria-label="Toggle navigation menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+          <div class="nav-dropdown__menu mobile-nav-menu" role="menu">
+            <a href="#hero" class="nav-dropdown__item" role="menuitem">Главная</a>
+            <a href="#apartments" class="nav-dropdown__item" role="menuitem">Апартаменты</a>
+            <a href="#about" class="nav-dropdown__item" role="menuitem">О комплексе</a>
+            <a href="#location" class="nav-dropdown__item" role="menuitem">Расположение</a>
+            <a href="services.html" class="nav-dropdown__item" role="menuitem">Услуги</a>
+            <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+            <a href="#" class="nav-dropdown__item" role="menuitem">Правила пребывания</a>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -621,8 +639,52 @@
 
   <!-- === FOOTER === -->
   <footer class="site-footer">
-    <div class="container" style="text-align: center; color: var(--color-text-secondary); opacity: 0.5;">
-      <p>Здесь будет расположен подвал сайта (Footer) с контактной информацией.</p>
+    <div class="container footer-grid">
+
+      <!-- Brand & Desc -->
+      <div class="footer-brand">
+        <a href="index.html#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+          </svg>
+          <span
+            style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+        </a>
+        <p class="footer-desc mt-4">
+          Забронируйте идеальные апартаменты для отдыха в Алуште в комплексе Аура. Комфортные номера у моря напрямую от
+          собственника.
+        </p>
+        <div class="footer-socials mt-6">
+          <a href="https://t.me/" target="_blank" aria-label="Telegram" class="footer-social-icon">
+            <img src="assets/icony/telegram.png" alt="Telegram" style="width: 32px; height: 32px; object-fit: contain;">
+          </a>
+        </div>
+      </div>
+
+      <!-- Links Column 1 -->
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">НАВИГАЦИЯ</h4>
+        <ul class="footer-links">
+          <li><a href="index.html#about">О комплексе</a></li>
+          <li><a href="services.html">Услуги</a></li>
+          <li><a href="contact.html">Контакты</a></li>
+        </ul>
+      </div>
+
+      <!-- Links Column 2 -->
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">ДОКУМЕНТЫ</h4>
+        <ul class="footer-links">
+          <li><a href="#">Политика конфиденциальности</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Апарт-отель «Aura». Все права защищены.</p>
+      </div>
     </div>
   </footer>
 
@@ -637,7 +699,7 @@
     }
 
     @media (max-width: 1023px) {
-      .mobile-menu-btn {
+      .mobile-nav-dropdown {
         display: inline-flex !important;
       }
     }
