@@ -103,7 +103,8 @@
 @media (min-width: 768px) {
     .gallery-grid {
         grid-template-columns: 2fr 1fr;
-        height: 500px;
+        grid-template-rows: 100%;
+        height: 700px;
         /* Slight increase to balance aspect ratios */
     }
 }
@@ -424,7 +425,8 @@
     gap: var(--space-2);
 }
 
-.input-group label {
+.input-group label,
+.input-group .fake-label {
     font-size: var(--font-size-xs);
     font-weight: 700;
     text-transform: uppercase;
@@ -469,4 +471,267 @@
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     margin-top: var(--space-3);
+}
+
+/* --- Custom Calendar Widget --- */
+@keyframes dropdown-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-calendar-popup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: absolute;
+    top: calc(100% + var(--space-4));
+    left: 0;
+    right: 0;
+    width: auto;
+    background-color: var(--color-background);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    padding: var(--space-4);
+    /* Hidden by default via opacity+visibility — preserves layout so media queries apply correctly */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
+}
+
+@media (min-width: 480px) {
+    .custom-calendar-popup {
+        padding: var(--space-6);
+        left: -10px;
+        right: -10px;
+    }
+}
+
+.custom-calendar-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
+}
+
+.calendar-header-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.calendar-icon {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+}
+
+.calendar-title-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    font-family: var(--font-family-heading);
+    color: var(--color-text-primary);
+}
+
+.calendar-selected-range {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.calendar-inner-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+}
+
+.calendar-month-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.calendar-current-month {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    font-family: var(--font-family-sans);
+    color: var(--color-text-primary);
+}
+
+.cal-nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color var(--transition-fast);
+}
+
+.cal-nav-btn:hover {
+    background-color: var(--color-surface);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.calendar-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: var(--space-2);
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.cal-day {
+    position: relative;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    z-index: 1;
+}
+
+.cal-day.empty {
+    cursor: default;
+}
+
+.cal-day.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.cal-day.blocked-date {
+    color: #888888;
+    z-index: 2;
+    position: relative;
+}
+
+.cal-day.blocked-date::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #E5E5E5;
+    z-index: -1;
+}
+
+.cal-day.blocked-start::before {
+    left: 4px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.cal-day.blocked-end::before {
+    right: 4px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.cal-day.blocked-start.blocked-end::before {
+    left: 4px;
+    right: 4px;
+    border-radius: 8px;
+}
+
+/* Range background styling */
+.cal-day.in-range::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    background-color: #FEF8D6;
+    /* Light yellow for range */
+    z-index: -1;
+}
+
+/* Make start/end cells connect perfectly to the range */
+.cal-day.range-start::before {
+    left: 50%;
+}
+
+.cal-day.range-end::before {
+    right: 50%;
+}
+
+.cal-day.range-start.range-end::before {
+    display: none;
+}
+
+/* Circle for actual selected date */
+.cal-day.selected {
+    color: var(--color-text-primary);
+}
+
+.cal-day.selected::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    background-color: #FCE87F;
+    /* Yellow circle */
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.calendar-continue-btn {
+    width: 100%;
+    background-color: #FCE87F;
+    color: var(--color-text-primary);
+    border: none;
+    padding: var(--space-3);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.calendar-continue-btn:hover {
+    background-color: #F8E05F;
+    transform: translateY(-2px);
 }
