@@ -428,6 +428,46 @@
         </div>
     </div>
 
+    <!-- Booking Modal -->
+    <div class="booking-modal-overlay" id="booking-modal">
+        <div class="booking-modal-content">
+            <button class="booking-modal-close" id="booking-modal-close" type="button"
+                aria-label="Закрыть">&times;</button>
+            <div class="booking-modal-body">
+                <h3 class="booking-modal-title">Контактные данные</h3>
+                <p class="booking-modal-subtitle">Пожалуйста, заполните форму для завершения бронирования.</p>
+                <form id="booking-confirmation-form" class="booking-modal-form" autocomplete="off">
+                    <div class="input-group">
+                        <label for="booking-name">ФИО *</label>
+                        <input type="text" id="booking-name" class="form-control" required
+                            placeholder="Иванов Иван Иванович">
+                    </div>
+                    <div class="input-group">
+                        <label for="booking-phone">Номер телефона *</label>
+                        <input type="tel" id="booking-phone" class="form-control" required
+                            placeholder="+7 (999) 000-00-00">
+                    </div>
+                    <div class="input-group">
+                        <label for="booking-email">Email *</label>
+                        <input type="email" id="booking-email" class="form-control" required
+                            placeholder="example@mail.ru">
+                    </div>
+                    <div class="input-group">
+                        <label for="booking-telegram">Telegram (по желанию)</label>
+                        <input type="text" id="booking-telegram" class="form-control" placeholder="@username">
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="booking-consent" required>
+                        <label for="booking-consent">Я подтверждаю согласие на <a href="privacy.html"
+                                target="_blank">обработку персональных данных</a> *</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; margin-top: 16px; height: 48px;">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
 
     <!-- Developer Tools Quick-Fix for Responsive Logic in MVP -->

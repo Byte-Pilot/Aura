@@ -454,5 +454,94 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial setup
     renderCalendar();
     formatRangeDisplay(); // Fix colors of placeholders
+
+    // === Booking Form Modal Logic ===
+    const bookingForm = document.querySelector('.booking-form');
+    const bookingModal = document.getElementById('booking-modal');
+    const bookingModalClose = document.getElementById('booking-modal-close');
+    const bookingConfirmForm = document.getElementById('booking-confirmation-form');
+
+    if (bookingForm && bookingModal) {
+      bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!checkinInput.value || !checkoutInput.value) {
+          alert('Пожалуйста, выберите даты заезда и выезда.');
+          return;
+        }
+
+        bookingModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+      });
+
+      const closeBookingModal = () => {
+        bookingModal.classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      if (bookingModalClose) {
+        bookingModalClose.addEventListener('click', closeBookingModal);
+      }
+
+      bookingModal.addEventListener('click', (e) => {
+        if (e.target === bookingModal) {
+          closeBookingModal();
+        }
+      });
+
+      if (bookingConfirmForm) {
+        const phoneInput = document.getElementById('booking-phone');
+        const phoneError = document.createElement('div');
+        phoneError.className = 'field-error';
+        phoneError.textContent = 'Введите корректный номер телефона';
+        phoneInput.parentNode.appendChild(phoneError);
+
+        // Validate on input — clear error as soon as user types
+        phoneInput.addEventListener('input', () => {
+          phoneInput.classList.remove('input-error');
+          phoneError.classList.remove('visible');
+        });
+
+        function isValidPhone(value) {
+          // Strip everything except digits and leading +
+          const digits = value.replace(/\D/g, '');
+          // Russian numbers: 11 digits starting with 7 or 8
+          // International (other countries): 7-15 digits total
+          if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) {
+            return true;
+          }
+          // Other formats: at least 10 digits
+          if (digits.length >= 10 && digits.length <= 15) {
+            return true;
+          }
+          return false;
+        }
+
+        bookingConfirmForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const phoneVal = phoneInput.value.trim();
+          if (!isValidPhone(phoneVal)) {
+            phoneInput.classList.add('input-error');
+            phoneError.classList.add('visible');
+            phoneInput.focus();
+            return;
+          }
+
+          const name = document.getElementById('booking-name').value;
+          alert(`Спасибо, ${name}! Ваша заявка успешно отправлена.`);
+          closeBookingModal();
+          bookingForm.reset();
+          bookingConfirmForm.reset();
+          phoneInput.classList.remove('input-error');
+          phoneError.classList.remove('visible');
+
+          selectionStart = null;
+          selectionEnd = null;
+          formatRangeDisplay();
+          renderCalendar();
+        });
+      }
+    }
   }
 });
