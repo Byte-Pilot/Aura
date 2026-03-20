@@ -1,0 +1,17 @@
+# Env variables
+.env
+.agent
+
+# IDEs
+.idea
+.vscode/
+
+# Binaries
+/backend
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out

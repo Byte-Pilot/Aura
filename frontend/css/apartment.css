@@ -660,6 +660,13 @@
     border-bottom-left-radius: 8px;
 }
 
+/* New class for when an adjacent check-in date is selected as check-out */
+.cal-day.blocked-start-half::before {
+    left: 50%; /* Only block the right half */
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .cal-day.blocked-end::before {
     right: 4px;
     border-top-right-radius: 8px;
