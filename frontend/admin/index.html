@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Admin Panel</title>
+    <!-- ПЕРЕИСПОЛЬЗУЕМ СТИЛИ -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- СТИЛЬ АДМИНКИ -->
+    <link rel="stylesheet" href="./admin.css" />
+</head>
+
+<body>
+
+    <!-- МОДАЛЬНОЕ ОКНО ЛОГИНА -->
+    <div id="login-overlay" class="login-overlay active">
+        <div class="login-box">
+            <h2>Aura Admin</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Логин</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div id="login-error" class="error-message hidden">Неверный логин или пароль</div>
+                <button type="submit" class="btn-primary" id="login-btn">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ СОДЕРЖИМОЕ АДМИНКИ -->
+    <div id="admin-container" class="admin-container hidden">
+        <!-- БОКОВОЕ МЕНЮ -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo">
+                Aura Admin
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="bookings-view">Заявки</a>
+                <a href="#" class="nav-item" data-target="calendar-view">Календарь</a>
+                <a href="#" class="nav-item" data-target="block-dates-view">Блокировка дат</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn-secondary">Выйти</button>
+            </div>
+        </aside>
+
+        <!-- ГЛАВНЫЙ ЭКРАН -->
+        <main class="admin-main">
+            <!-- Вью: Бронирования -->
+            <section id="bookings-view" class="view-section active">
+                <div class="view-header">
+                    <h1>Все бронирования</h1>
+                    <button class="btn-secondary" id="refresh-bookings-btn">Обновить</button>
+                </div>
+
+                <div class="table-container" style="overflow-x:auto; transform:scaleY(-1);">
+                    <table class="admin-table" style="transform:scaleY(-1);">
+                        <colgroup>
+                            <col style="min-width:50px">
+                            <col style="min-width:60px">
+                            <col style="min-width:160px">
+                            <col style="min-width:160px">
+                            <col style="min-width:130px">
+                            <col style="min-width:100px">
+                            <col style="min-width:120px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>№</th>
+                                <th>Гость</th>
+                                <th>Контакты</th>
+                                <th>Даты</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- Тут будет рендериться JS -->
+                            <tr>
+                                <td colspan="7" class="loading-cell">Загрузка данных...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Вью: Блокировка дат -->
+            <section id="block-dates-view" class="view-section hidden">
+                <div class="view-header">
+                    <h1>Блокировка дат</h1>
+                </div>
+
+                <div class="block-form-card">
+                    <h3>Заблокировать даты</h3>
+                    <p class="text-secondary">Укажите апартамент и период, чтобы закрыть продажи.</p>
+
+                    <form id="block-dates-form" class="admin-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="block-apt">Апартамент №</label>
+                                <input type="number" id="block-apt" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="block-from">С</label>
+                                <input type="date" id="block-from" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="block-to">По</label>
+                                <input type="date" id="block-to" required>
+                            </div>
+                        </div>
+                        <div id="block-message" class="hidden"></div>
+                        <button type="submit" class="btn-primary">Заблокировать</button>
+                    </form>
+                </div>
+                <div class="block-form-card" style="margin-top:20px;">
+                    <h3>Разблокировать даты</h3>
+                    <p class="text-secondary">Снять ручную блокировку для апартамента.</p>
+
+                    <form id="unblock-dates-form" class="admin-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="unblock-apt">Апартамент №</label>
+                                <input type="number" id="unblock-apt" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="unblock-from">С</label>
+                                <input type="date" id="unblock-from" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="unblock-to">По</label>
+                                <input type="date" id="unblock-to" required>
+                            </div>
+                        </div>
+                        <div id="unblock-message" class="hidden"></div>
+                        <button type="submit" class="btn-primary" style="background-color: #666">Разблокировать</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Вью: Календарь -->
+            <section id="calendar-view" class="view-section hidden">
+                <div class="view-header">
+                    <h1>Календарь</h1>
+                </div>
+
+                <div class="calendar-admin-container">
+                    <div
+                        style="margin-bottom: var(--space-4); display: flex; align-items: center; justify-content: space-between;">
+                        <h3 style="margin: 0; font-size: var(--font-size-lg);">Апартаменты №57</h3>
+                        <!-- В будущем здесь можно добавить <select> для выбора апартаментов, если их будет много -->
+                    </div>
+                    <div class="calendar-grid-4" id="admin-calendar-grid">
+                        <!-- Сюда JS сгенерирует 3 месяца -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="./admin.js"></script>
+</body>
+
+</html>
