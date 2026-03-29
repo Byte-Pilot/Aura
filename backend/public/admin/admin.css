@@ -279,7 +279,7 @@ body {
 
 .search-container.active {
     border-color: var(--color-text-primary);
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
 }
 
 .search-btn {
@@ -602,12 +602,16 @@ body {
     opacity: 0.8;
 }
 
-.admin-cal-day.past {
-    background-color: #e5e7eb;
-    /* Темно-серый фон */
-    color: #6b7280;
-    /* Темно-серый текст */
-    border-color: #d1d5db;
+.admin-cal-day.past-booked {
+    background-color: #b4bcc8;
+    color: #475569;
+    border-color: #94a3b8;
+}
+
+.admin-cal-day.past-free {
+    background-color: #e2e8f0;
+    color: #475569;
+    border-color: #cbd5e1;
 }
 
 @media (max-width: 1024px) {

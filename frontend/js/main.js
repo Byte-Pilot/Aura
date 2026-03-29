@@ -387,6 +387,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleDayClick(dayDate) {
       const selectedTime = dayDate.getTime();
+      const maxDate = new Date();
+      maxDate.setFullYear(maxDate.getFullYear() + 1);
+      maxDate.setHours(0, 0, 0, 0);
+
+      if (selectedTime > maxDate.getTime()) {
+        alert('Бронирование доступно максимум на год вперед.');
+        return;
+      }
 
       if (!selectionStart || (selectionStart && selectionEnd)) {
         if (isDateBlocked(dayDate)) return;
@@ -473,7 +481,11 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        if (cellTime < today.getTime() || isBlocked) {
+        const maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear() + 1);
+        maxDate.setHours(0, 0, 0, 0);
+
+        if (cellTime < today.getTime() || isBlocked || cellTime > maxDate.getTime()) {
           dayCell.classList.add('disabled');
           if (isBlocked) {
             dayCell.classList.add('blocked-date');
@@ -486,6 +498,8 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             }
             if (!isDateBlocked(nextDate)) dayCell.classList.add('blocked-end');
+          } else if (cellTime > maxDate.getTime()) {
+            dayCell.title = 'Бронирование доступно максимум на год вперед';
           }
         } else {
           dayCell.addEventListener('click', () => handleDayClick(cellDate));
@@ -525,6 +539,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!checkinInput.value || !checkoutInput.value) {
           alert('Пожалуйста, выберите даты заезда и выезда.');
+          return;
+        }
+
+        const checkinDate = new Date(checkinInput.value + 'T00:00:00');
+        const maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear() + 1);
+        maxDate.setHours(0, 0, 0, 0);
+
+        if (checkinDate.getTime() > maxDate.getTime()) {
+          alert('Бронирование доступно максимум на год вперед.');
           return;
         }
 

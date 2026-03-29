@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Полезная информация — AURA Апарт-отель в Алуште</title>
+    <meta name="description"
+        content="Полезная информация для гостей апарт-отеля AURA: лучшие рестораны, кафе и достопримечательности Алушты.">
+
+    <!-- Styling Foundation -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Temporary SVG Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E">
+</head>
+
+<body>
+
+    <!-- === HEADER === -->
+    <header class="site-header">
+        <div class="container flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="/#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                </svg>
+                <span
+                    style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav-links">
+                <a href="/#hero">Главная</a>
+                <a href="/#apartments">Апартаменты</a>
+                <a href="/#about">О комплексе</a>
+                <a href="/#location">Расположение</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown__trigger flex items-center gap-1" aria-expanded="false"
+                        aria-haspopup="true">Еще
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu" role="menu">
+                        <a href="services" class="nav-dropdown__item" role="menuitem">Услуги</a>
+                        <a href="info" class="nav-dropdown__item active" role="menuitem">Полезная информация</a>
+                        <a href="rules" class="nav-dropdown__item" role="menuitem">Правила проживания</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Auth and Actions -->
+            <div class="flex items-center gap-4">
+                <a href="#login" class="btn-ghost" style="display: none;">Личный кабинет</a>
+                <a href="contact" class="btn btn-primary">Связаться</a>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="nav-dropdown mobile-nav-dropdown" style="display: none;">
+                    <button class="mobile-menu-btn nav-dropdown__trigger" aria-expanded="false"
+                        aria-label="Toggle navigation menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu mobile-nav-menu" role="menu">
+                        <a href="/#hero" class="nav-dropdown__item" role="menuitem">Главная</a>
+                        <a href="/#apartments" class="nav-dropdown__item" role="menuitem">Апартаменты</a>
+                        <a href="/#about" class="nav-dropdown__item" role="menuitem">О комплексе</a>
+                        <a href="/#location" class="nav-dropdown__item" role="menuitem">Расположение</a>
+                        <a href="services" class="nav-dropdown__item" role="menuitem">Услуги</a>
+                        <a href="info" class="nav-dropdown__item active" role="menuitem">Полезная информация</a>
+                        <a href="rules" class="nav-dropdown__item" role="menuitem">Правила проживания</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- === INFO PAGE CONTENT === -->
+        <section class="py-section pt-section-compact">
+            <div class="container" style="max-width: 900px; margin: 0 auto;">
+                <h1 style="margin-bottom: 24px; font-size: var(--font-size-3xl); line-height: 1.2;">
+                    Где поесть и что посмотреть в Алуште — лучшие рестораны и достопримечательности
+                </h1>
+
+                <div class="info-content" style="line-height: 1.6; color: var(--color-foreground);">
+                    <p style="margin-bottom: 32px; font-size: 1.1rem;">Во время отдыха в Алуште важно знать проверенные
+                        места, где можно вкусно поесть. Ниже — популярные кафе и рестораны, которые выбирают туристы и
+                        местные жители.</p>
+
+                    <!-- Restaurants Grid -->
+                    <div class="info-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; margin-bottom: 64px;">
+
+                        <!-- Кафе «Встреча» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">Кафе «Встреча»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Ленина, 2</div>
+                                <div>📞 Телефон: +7 978 728-84-39</div>
+                                <div>🕒 Часы работы: ежедневно с 11:00 до 23:00</div>
+                            </div>
+                            <p>Уютное кафе в центре Алушты рядом с набережной. Подходит для спокойного обеда или ужина.
+                                В меню — блюда домашней кухни, завтраки и комплексные обеды. Хороший вариант, если
+                                хочется поесть недорого и без лишней суеты.</p>
+                        </div>
+
+                        <!-- Ресторан «Roppongi» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">Ресторан «Roppongi»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Ленина, 11Г</div>
+                                <div>📞 Телефон: 8 800 350 50 52</div>
+                                <div>🕒 Часы работы: ежедневно с 11:00 до 23:00</div>
+                            </div>
+                            <p>Современное заведение с акцентом на японскую и паназиатскую кухню. В меню — суши, роллы,
+                                воки и горячие блюда. Подходит для тех, кто хочет разнообразить отдых и поужинать в
+                                более современном формате. Удобно расположен недалеко от набережной, поэтому сюда часто
+                                заходят после прогулки.</p>
+                        </div>
+
+                        <!-- «Старик Хинкалыч» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">«Старик Хинкалыч»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Ленина, 15 (есть и другие точки)</div>
+                                <div>📞 Телефон: +7 978 270-61-33</div>
+                                <div>🕒 Часы работы: ежедневно с 11:00 до 23:00</div>
+                            </div>
+                            <p>Популярная сеть хинкальных с грузинской кухней. Основное блюдо — хинкали, которые готовят
+                                вручную. Также в меню есть хачапури, супы и горячие блюда. Отличное соотношение цены и
+                                качества, подходит для быстрого и сытного обеда.</p>
+                        </div>
+
+                        <!-- «БарабуляБар» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">«БарабуляБар»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Ленина, 15Г</div>
+                                <div>📞 Телефон: +7 978 265-80-48</div>
+                                <div>🕒 Часы работы: ежедневно с 10:00 до 23:00</div>
+                            </div>
+                            <p>Заведение на набережной, куда часто заходят за свежей рыбой и морепродуктами. В меню —
+                                блюда из улова, приготовленные в разных вариантах. Удобное расположение у моря делает
+                                это место хорошим вариантом для обеда или ужина во время прогулки.</p>
+                        </div>
+
+                        <!-- Ресторан «Старый город» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">Ресторан «Старый город»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Горького, 15А</div>
+                                <div>📞 Телефон: +7 978 304-52-62</div>
+                                <div>🕒 Часы работы: ежедневно с 10:00 до 23:00</div>
+                            </div>
+                            <p>Уютное место для спокойного ужина в центре города. В меню представлены блюда европейской
+                                и местной кухни, есть хороший выбор горячих блюд и закусок. Подойдёт для вечернего
+                                отдыха, встреч с друзьями или неспешного ужина.</p>
+                        </div>
+
+                        <!-- Ресторан «Жюль Верн» -->
+                        <div class="info-card">
+                            <h3 style="margin-bottom: 12px; color: var(--color-primary);">Ресторан «Жюль Верн»</h3>
+                            <div style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-foreground-muted);">
+                                <div>📍 Адрес: ул. Ленина, 10</div>
+                                <div>📞 Телефон: +7 978 016 60 60</div>
+                                <div>🕒 Часы работы: ежедневно с 11:00 до 23:00</div>
+                            </div>
+                            <p>Стильный ресторан с европейской кухней и приятной атмосферой. Подходит для вечернего
+                                отдыха, ужина или встречи с друзьями. Часто выбирают за уютный интерьер и разнообразное
+                                меню.</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Sightseeing Section -->
+                    <h2 style="margin-top: 64px; margin-bottom: 32px; font-size: var(--font-size-2xl);">🎡 Что
+                        посмотреть в Алуште</h2>
+                    <p style="margin-bottom: 32px;">Алушта — это не только пляжный отдых, но и множество интересных мест
+                        и развлечений. Здесь легко совместить море, природу и экскурсии.</p>
+
+                    <div class="sightseeing-list" style="margin-bottom: 64px;">
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="margin-bottom: 8px;">Прогулка по морю на катере</h4>
+                            <p>Один из самых популярных вариантов отдыха. Можно отправиться на морскую прогулку вдоль
+                                побережья, искупаться в открытом море и насладиться видами Крыма с воды. <strong>Для
+                                    гостей наших апартаментов есть возможность заранее организовать такую
+                                    прогулку.</strong></p>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="margin-bottom: 8px;">Долина привидений</h4>
+                            <p>Необычное природное место с каменными образованиями причудливых форм. Отличный вариант
+                                для прогулок и экскурсий, особенно на закате.</p>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="margin-bottom: 8px;">Воронцовский дворец</h4>
+                            <p>Одна из самых известных достопримечательностей Крыма. Исторический дворец с красивым
+                                парком и архитектурой в стиле неоготики. Подходит для однодневной поездки из Алушты.</p>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <h4 style="margin-bottom: 8px;">Ласточкино гнездо</h4>
+                            <p>Знаковое место Крыма, расположенное на скале над морем. Часто посещается во время
+                                экскурсий вдоль Южного берега. Отличная локация для фотографий.</p>
+                        </div>
+                    </div>
+
+                    <!-- Trips Section -->
+                    <div
+                        style="background: var(--color-bg-alt); padding: 32px; border-radius: var(--radius-lg); border-left: 4px solid var(--color-primary);">
+                        <h2 style="margin-bottom: 16px; font-size: var(--font-size-xl);">Поездки по Южному берегу Крыма
+                        </h2>
+                        <p>Из Алушты удобно добраться до многих популярных мест. Поездки в сторону Ялты позволяют за
+                            один день посмотреть сразу несколько достопримечательностей и насладиться красивыми видами
+                            побережья.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- === FOOTER === -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+
+            <!-- Brand & Desc -->
+            <div class="footer-brand">
+                <a href="/#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                    </svg>
+                    <span
+                        style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+                </a>
+                <p class="footer-desc mt-4">
+                    Забронируйте идеальные апартаменты для отдыха в Алуште в комплексе Аура. Комфортные номера у моря
+                    напрямую от собственника.
+                </p>
+                <div class="footer-socials mt-6">
+                    <a href="https://t.me/" target="_blank" aria-label="Telegram" class="footer-social-icon">
+                        <img src="assets/icony/telegram.png" alt="Telegram"
+                            style="width: 32px; height: 32px; object-fit: contain;">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Column 1 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">НАВИГАЦИЯ</h4>
+                <ul class="footer-links">
+                    <li><a href="/#about">О комплексе</a></li>
+                    <li><a href="services">Услуги</a></li>
+                    <li><a href="contact">Контакты</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">ДОКУМЕНТЫ</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy">Политика конфиденциальности</a></li>
+                    <li><a href="rules">Правила проживания</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 AURA — Аренда апартаментов от собственника. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+    <!-- Developer Tools Quick-Fix for Responsive Logic in MVP -->
+    <style>
+        @media (min-width: 768px) {
+            .btn-ghost[href="#login"] {
+                display: inline-flex !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .mobile-nav-dropdown {
+                display: inline-flex !important;
+            }
+        }
+
+        .info-card {
+            background: var(--color-surface);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--color-border);
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sightseeing-list h4 {
+            color: var(--color-foreground);
+            font-size: 1.2rem;
+        }
+
+        .info-content p {
+            margin-bottom: 16px;
+        }
+    </style>
+</body>
+
+</html>

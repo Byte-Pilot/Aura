@@ -43,6 +43,10 @@ func (s *service) CheckAvailability(ctx context.Context, from, to string, apartm
 	if checkIn.Before(today) {
 		return false, errors.New("cannot check dates in the past")
 	}
+	maxDate := today.AddDate(1, 0, 0)
+	if checkIn.After(maxDate) {
+		return false, errors.New("бронирование доступно максимум на год вперед")
+	}
 
 	return s.repo.CheckAvailability(ctx, checkIn, checkOut, apartmentNumber)
 }
@@ -68,6 +72,10 @@ func (s *service) CreateBooking(ctx context.Context, req model.BookingRequest) (
 	today := time.Now().Truncate(24 * time.Hour)
 	if checkIn.Before(today) {
 		return 0, errors.New("cannot book dates in the past")
+	}
+	maxDate := today.AddDate(1, 0, 0)
+	if checkIn.After(maxDate) {
+		return 0, errors.New("бронирование доступно максимум на год вперед")
 	}
 
 	booking := model.Booking{

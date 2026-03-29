@@ -8,6 +8,9 @@ import (
 	"backend/internal/middleware"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func NewServer(
@@ -18,7 +21,18 @@ func NewServer(
 ) http.Handler {
 	mux := http.NewServeMux()
 
-	front := http.FileServer(http.Dir("./public"))
+	front := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+		if path == "/" || strings.Contains(filepath.Base(path), ".") {
+			http.FileServer(http.Dir("./public")).ServeHTTP(w, r)
+			return
+		}
+		htmlPath := path + ".html"
+		if _, err := os.Stat(filepath.Join("./public", htmlPath)); err == nil {
+			r.URL.Path = htmlPath
+		}
+		http.FileServer(http.Dir("./public")).ServeHTTP(w, r)
+	})
 	mux.Handle("/", front)
 
 	apiMux := http.NewServeMux()

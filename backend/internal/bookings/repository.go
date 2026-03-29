@@ -90,7 +90,7 @@ func (r *repository) GetCalendar(ctx context.Context, apartmentNumber int) ([]mo
 		SELECT check_in, check_out FROM bookings
 		WHERE apartment_number = $1
 		  AND status IN ('confirmed', 'blocked')
-		  AND check_out >= CURRENT_DATE
+		  AND check_out >= CURRENT_DATE - INTERVAL '12 months'
 	`
 	rows, err := r.db.Query(ctx, query, apartmentNumber)
 	if err != nil {

@@ -622,7 +622,9 @@
 
 .cal-day.disabled {
     color: #ccc;
+    background-color: #f9f9f9;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
 .cal-day.blocked-date {

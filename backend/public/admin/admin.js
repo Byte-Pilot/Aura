@@ -781,12 +781,17 @@ function renderGenericCalendarGrid(gridElement, apt) {
 
             dayCell.textContent = day;
 
-            if (isBlocked) {
+            if (isPast) {
+                if (isBlocked) {
+                    dayCell.className = 'admin-cal-day past-booked';
+                    dayCell.title = 'Прошедшая дата (было занято)';
+                } else {
+                    dayCell.className = 'admin-cal-day past-free';
+                    dayCell.title = 'Прошедшая дата (было свободно)';
+                }
+            } else if (isBlocked) {
                 dayCell.className = 'admin-cal-day booked';
                 dayCell.title = 'Занято / Заблокировано';
-            } else if (isPast) {
-                dayCell.className = 'admin-cal-day past';
-                dayCell.title = 'Прошедшая дата';
             } else {
                 dayCell.className = 'admin-cal-day free';
                 dayCell.title = 'Свободно';
