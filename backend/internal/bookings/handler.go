@@ -48,6 +48,14 @@ func (h *Handler) CreateBooking(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Website != "" {
+		middleware.SuccessResponse(w, http.StatusCreated, map[string]interface{}{
+			"message": "booking created successfully",
+			"id":      "dummy",
+		})
+		return
+	}
+
 	id, err := h.service.CreateBooking(r.Context(), req)
 	if err != nil {
 		if err.Error() == "dates are already booked or blocked" {

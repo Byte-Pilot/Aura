@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
             phone: phoneVal,
             email: document.getElementById('booking-email').value.trim(),
             telegram: document.getElementById('booking-telegram').value.trim(),
+            website: (document.getElementById('booking-website') ? document.getElementById('booking-website').value.trim() : ""),
             apartment_number: apartmentNumber,
             check_in: checkinInput.value,
             check_out: checkoutInput.value,

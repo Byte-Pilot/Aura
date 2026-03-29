@@ -49,7 +49,7 @@ func (s *service) BlockDates(ctx context.Context, req model.AdminBlockRequest) e
 	}
 
 	if checkIn.After(checkOut) || checkIn.Equal(checkOut) {
-		return errors.New("check_in date must be before check_out date")
+		return errors.New("дата заезда должна быть раньше даты выезда")
 	}
 
 	booking := model.Booking{

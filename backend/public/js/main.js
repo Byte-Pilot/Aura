@@ -452,14 +452,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let isBlocked = isDateBlocked(cellDate);
         let isHalfBlocked = false;
-        
+
         if (isBlocked) {
           if (selectionEnd && cellTime === selectionEnd.getTime()) {
             isBlocked = false;
             // if this is the start of a blocked booking, we want it to look half blocked
             const prevDate = new Date(currentYear, currentMonth, i - 1);
             if (!isDateBlocked(prevDate)) {
-               isHalfBlocked = true;
+              isHalfBlocked = true;
             }
           } else if (selectionStart && !selectionEnd && cellTime > selectionStart.getTime()) {
             if (!isStrictlyBlocked(cellDate) && !hasBlockedDatesInRange(selectionStart, cellDate)) {
@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
               // if this is a click-able target on a blocked booking boundary
               const prevDate = new Date(currentYear, currentMonth, i - 1);
               if (!isDateBlocked(prevDate)) {
-                 isHalfBlocked = true;
+                isHalfBlocked = true;
               }
             }
           }
@@ -480,10 +480,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const prevDate = new Date(currentYear, currentMonth, i - 1);
             const nextDate = new Date(currentYear, currentMonth, i + 1);
             if (!isDateBlocked(prevDate)) {
-               // Only add full blocked-start if it's not a half-blocked scenario
-               if (isBlocked && !isHalfBlocked) { 
-                   dayCell.classList.add('blocked-start'); 
-               }
+              // Only add full blocked-start if it's not a half-blocked scenario
+              if (isBlocked && !isHalfBlocked) {
+                dayCell.classList.add('blocked-start');
+              }
             }
             if (!isDateBlocked(nextDate)) dayCell.classList.add('blocked-end');
           }
@@ -498,11 +498,11 @@ document.addEventListener('DOMContentLoaded', () => {
           if (inRange) dayCell.classList.add('in-range');
           if (isStart && selectionEnd) dayCell.classList.add('in-range', 'range-start');
           if (isEnd && selectionStart) dayCell.classList.add('in-range', 'range-end');
-          
+
           if (isHalfBlocked) {
-              dayCell.classList.add('blocked-date');
-              dayCell.classList.add('blocked-start-half');
-              dayCell.classList.remove('blocked-start'); // ensure it doesn't conflict
+            dayCell.classList.add('blocked-date');
+            dayCell.classList.add('blocked-start-half');
+            dayCell.classList.remove('blocked-start'); // ensure it doesn't conflict
           }
         }
 
@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
             phone: phoneVal,
             email: document.getElementById('booking-email').value.trim(),
             telegram: document.getElementById('booking-telegram').value.trim(),
+            website: (document.getElementById('booking-website') ? document.getElementById('booking-website').value.trim() : ""),
             apartment_number: apartmentNumber,
             check_in: checkinInput.value,
             check_out: checkoutInput.value,

@@ -39,7 +39,6 @@ func (r *repository) CheckAvailability(ctx context.Context, checkIn, checkOut ti
 	if err != nil {
 		return false, err
 	}
-	
 	return !exists, nil
 }
 

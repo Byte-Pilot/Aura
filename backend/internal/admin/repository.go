@@ -87,7 +87,7 @@ func (r *repository) UpdateBookingStatus(ctx context.Context, id int, status mod
 		return err
 	}
 	if tag.RowsAffected() == 0 {
-		return errors.New("booking not found")
+		return errors.New("бронирование не найдено")
 	}
 	return nil
 }
@@ -108,14 +108,13 @@ func (r *repository) CreateBlock(ctx context.Context, b model.Booking) error {
 		return err
 	}
 	if exists {
-		return errors.New("cannot block dates, there is already a confirmed booking in this period")
+		return errors.New("невозможно заблокировать даты: в этом периоде уже есть подтверждённое бронирование")
 	}
 
 	queryInsert := `
 		INSERT INTO bookings (name, phone, email, apartment_number, check_in, check_out, status)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
-	
 	_, err = r.db.Exec(ctx, queryInsert, "Admin", "N/A", "Admin", b.ApartmentNumber, b.CheckIn, b.CheckOut, model.StatusBlocked)
 	return err
 }
@@ -134,7 +133,7 @@ func (r *repository) UnblockDates(ctx context.Context, req model.AdminUnblockReq
 		return err
 	}
 	if tag.RowsAffected() == 0 {
-		return errors.New("no matching blocked dates found")
+		return errors.New("заблокированные даты с такими параметрами не найдены")
 	}
 	return nil
 }

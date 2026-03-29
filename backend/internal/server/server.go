@@ -24,10 +24,10 @@ func NewServer(
 	apiMux := http.NewServeMux()
 
 	apiMux.HandleFunc("GET /availability", bookingsHandler.GetAvailability)
-	apiMux.HandleFunc("POST /bookings", bookingsHandler.CreateBooking)
+	apiMux.Handle("POST /bookings", middleware.Limiter.LimitBookings(http.HandlerFunc(bookingsHandler.CreateBooking)))
 	apiMux.HandleFunc("GET /calendar", bookingsHandler.GetCalendar)
 
-	apiMux.HandleFunc("POST /admin/login", authHandler.Login)
+	apiMux.Handle("POST /admin/login", middleware.Limiter.BlockBannedIPs(http.HandlerFunc(authHandler.Login)))
 	apiMux.HandleFunc("POST /admin/refresh", authHandler.Refresh)
 
 	adminMux := http.NewServeMux()
@@ -42,7 +42,8 @@ func NewServer(
 	apiMux.Handle("/admin/", protectedHandler)
 
 	jsonApiHandler := middleware.JSONContentType()(apiMux)
-	mux.Handle("/api/", http.StripPrefix("/api", jsonApiHandler))
+	rateLimitedApiHandler := middleware.Limiter.LimitAll(jsonApiHandler)
+	mux.Handle("/api/", http.StripPrefix("/api", rateLimitedApiHandler))
 
 	return logMiddleware(mux)
 }

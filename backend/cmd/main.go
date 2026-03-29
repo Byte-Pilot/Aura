@@ -9,13 +9,14 @@ import (
 	"backend/internal/server"
 	"context"
 	"errors"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -31,10 +32,12 @@ func main() {
 	}
 	defer conn.Close()
 
-	if err := conn.Ping(context.Background()); err != nil {
+	err = conn.Ping(context.Background())
+	if err != nil {
 		log.Fatalf("Database ping failed: %v", err)
+	} else {
+		log.Println("OK Connected to DB")
 	}
-	log.Println("OK Connected to DB")
 
 	bookingsRepo := bookings.NewRepository(conn)
 	bookingsService := bookings.NewService(bookingsRepo)
@@ -75,5 +78,3 @@ func main() {
 
 	log.Println("Successful server stop")
 }
-
-

@@ -137,12 +137,24 @@ const viewSections = document.querySelectorAll('.view-section');
 const bookingsTableBody = document.getElementById('bookings-table-body');
 const refreshBookingsBtn = document.getElementById('refresh-bookings-btn');
 
+// Search
+const bookingSearchContainer = document.getElementById('booking-search-container');
+const bookingSearchBtn = document.getElementById('booking-search-btn');
+const bookingSearchInput = document.getElementById('booking-search-input');
+
+// Filters
+const toggleFilterBtn = document.getElementById('toggle-filter-btn');
+const filterDropdownMenu = document.getElementById('filter-dropdown-menu');
+const filterAptCheckboxes = document.querySelectorAll('#filter-dropdown-menu .filter-apts input[type="checkbox"]');
+const filterDateFrom = document.getElementById('filter-date-from');
+const filterDateTo = document.getElementById('filter-date-to');
+const filterStatus = document.getElementById('filter-status');
+let allBookingsCache = [];
+
 const blockDatesForm = document.getElementById('block-dates-form');
 const blockMessage = document.getElementById('block-message');
 const unblockDatesForm = document.getElementById('unblock-dates-form');
 const unblockMessage = document.getElementById('unblock-message');
-
-const adminCalendarGrid = document.getElementById('admin-calendar-grid');
 
 // View Switching
 function showLogin() {
@@ -242,6 +254,147 @@ refreshBookingsBtn.addEventListener('click', () => {
     loadBookings();
 });
 
+// Search Toggle
+if (bookingSearchBtn && bookingSearchContainer && bookingSearchInput) {
+    bookingSearchBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = bookingSearchContainer.classList.toggle('active');
+        if (isActive) {
+            bookingSearchInput.focus();
+        } else {
+            // If collapsing and there was a search, clear it
+            if (bookingSearchInput.value) {
+                bookingSearchInput.value = '';
+                applyFilters();
+            }
+        }
+    });
+
+    bookingSearchInput.addEventListener('click', (e) => e.stopPropagation());
+    
+    bookingSearchInput.addEventListener('input', applyFilters);
+
+    bookingSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            bookingSearchContainer.classList.remove('active');
+            if (bookingSearchInput.value) {
+                bookingSearchInput.value = '';
+                applyFilters();
+            }
+        }
+    });
+}
+
+// Filter Dropdown Toggle
+if (toggleFilterBtn && filterDropdownMenu) {
+    toggleFilterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        filterDropdownMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!filterDropdownMenu.classList.contains('hidden') && 
+            !filterDropdownMenu.contains(e.target) &&
+            e.target !== toggleFilterBtn) {
+            filterDropdownMenu.classList.add('hidden');
+        }
+    });
+}
+
+// Reset Bookings Filter
+const resetBookingsFilterBtn = document.getElementById('reset-bookings-filter-btn');
+if (resetBookingsFilterBtn) {
+    resetBookingsFilterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        filterAptCheckboxes.forEach(cb => cb.checked = false);
+        filterDateFrom.value = '';
+        filterDateTo.value = '';
+        filterStatus.value = '';
+        if (bookingSearchInput) bookingSearchInput.value = '';
+        applyFilters();
+    });
+}
+
+// Filters Auto-apply
+filterAptCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+filterDateFrom.addEventListener('change', applyFilters);
+filterDateTo.addEventListener('change', applyFilters);
+filterStatus.addEventListener('change', applyFilters);
+
+function applyFilters() {
+    if (!allBookingsCache) return;
+    
+    // Get selected apartments
+    const selectedApts = Array.from(filterAptCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+        
+    const fromDate = filterDateFrom.value ? new Date(filterDateFrom.value) : null;
+    if (fromDate) fromDate.setHours(0,0,0,0);
+    
+    const toDate = filterDateTo.value ? new Date(filterDateTo.value) : null;
+    if (toDate) toDate.setHours(23,59,59,999);
+    
+    const status = filterStatus.value;
+    const searchTerm = bookingSearchInput ? bookingSearchInput.value.toLowerCase().trim() : '';
+    
+    const filtered = allBookingsCache.filter(b => {
+        // Search filter
+        if (searchTerm) {
+            const nameMatch = (b.name || '').toLowerCase().includes(searchTerm);
+            const phoneMatch = (b.phone || '').toLowerCase().includes(searchTerm);
+            const emailMatch = (b.email || '').toLowerCase().includes(searchTerm);
+            const telegramMatch = (b.telegram || '').toLowerCase().includes(searchTerm);
+            
+            if (!nameMatch && !phoneMatch && !emailMatch && !telegramMatch) {
+                return false;
+            }
+        }
+
+        // Apt filter
+        if (selectedApts.length > 0 && !selectedApts.includes(String(b.apartment_number))) {
+            return false;
+        }
+        
+        // Status filter
+        if (status && b.status !== status) {
+            return false;
+        }
+        
+        // Date filter
+        if (fromDate || toDate) {
+            const bCheckIn = new Date(b.check_in);
+            const bCheckOut = new Date(b.check_out);
+            
+            if (fromDate && bCheckOut < fromDate) return false;
+            if (toDate && bCheckIn > toDate) return false;
+        }
+        
+        return true;
+    });
+    
+    renderBookingsTable(filtered);
+}
+
+// Form Validation for active buttons
+function resetBlockButtonState() {
+    const btn = document.getElementById('btn-submit-block');
+    btn.classList.remove('is-empty');
+    btn.disabled = false;
+}
+document.getElementById('block-apt').addEventListener('change', resetBlockButtonState);
+document.getElementById('block-from').addEventListener('input', resetBlockButtonState);
+document.getElementById('block-to').addEventListener('input', resetBlockButtonState);
+
+function resetUnblockButtonState() {
+    const btn = document.getElementById('btn-submit-unblock');
+    btn.classList.remove('is-empty');
+    btn.disabled = false;
+}
+document.getElementById('unblock-apt').addEventListener('change', resetUnblockButtonState);
+document.getElementById('unblock-from').addEventListener('input', resetUnblockButtonState);
+document.getElementById('unblock-to').addEventListener('input', resetUnblockButtonState);
+
 // Block Dates Form
 blockDatesForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -258,14 +411,20 @@ blockDatesForm.addEventListener('submit', async (e) => {
         await blockDates(apt, from, to);
         blockMessage.className = 'success-message';
         blockMessage.textContent = 'Успешно заблокировано';
-        blockDatesForm.reset();
+        
+        // Оставляем введенные данные. Делаем кнопку серой и неактивной.
+        btn.classList.add('is-empty');
+        // Кнопка остается disabled (т.к. была заблокирована перед try)
+        
         // pre-fetch bookings to reflect changes visually if they switch tabs
         loadBookings();
     } catch (error) {
         blockMessage.className = 'error-message';
         blockMessage.textContent = error.message || 'Ошибка создания блокировки';
-    } finally {
+        
         btn.disabled = false;
+        btn.classList.remove('is-empty');
+    } finally {
         setTimeout(() => blockMessage.classList.add('hidden'), 5000);
     }
 });
@@ -286,13 +445,19 @@ unblockDatesForm.addEventListener('submit', async (e) => {
         await unblockDates(apt, from, to);
         unblockMessage.className = 'success-message';
         unblockMessage.textContent = 'Успешно разблокировано';
-        unblockDatesForm.reset();
+        
+        // Оставляем введенные данные. Делаем кнопку серой и неактивной.
+        btn.classList.add('is-empty');
+        // Кнопка остается disabled
+        
         loadBookings();
     } catch (error) {
         unblockMessage.className = 'error-message';
         unblockMessage.textContent = error.message || 'Ошибка при разблокировке';
-    } finally {
+        
         btn.disabled = false;
+        btn.classList.remove('is-empty');
+    } finally {
         setTimeout(() => unblockMessage.classList.add('hidden'), 5000);
     }
 });
@@ -347,7 +512,8 @@ async function loadBookings() {
 
     try {
         const bookings = await getBookings();
-        renderBookingsTable(bookings);
+        allBookingsCache = bookings || [];
+        applyFilters();
     } catch (error) {
         if (error.message !== 'Session expired') {
             bookingsTableBody.innerHTML = `<tr><td colspan="7" class="error-message">Ошибка загрузки: ${error.message}</td></tr>`;
@@ -415,36 +581,152 @@ function renderBookingsTable(bookings) {
 }
 
 // --- Admin Calendar Renders ---
+const adminApartments = [57, 58, 59, 163, 164];
+let adminCalendarMonthOffsets = { 57: 0, 58: 0, 59: 0, 163: 0, 164: 0 };
+let currentBlockedIntervalsByApt = {};
+
+// Calendar Filter
+const toggleCalFilterBtn = document.getElementById('toggle-cal-filter-btn');
+const calFilterDropdownMenu = document.getElementById('cal-filter-dropdown-menu');
+const calAptCheckboxes = document.querySelectorAll('#cal-filter-dropdown-menu .cal-apt-checkbox');
+
+if (toggleCalFilterBtn && calFilterDropdownMenu) {
+    toggleCalFilterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        calFilterDropdownMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!calFilterDropdownMenu.classList.contains('hidden') &&
+            !calFilterDropdownMenu.contains(e.target) &&
+            e.target !== toggleCalFilterBtn) {
+            calFilterDropdownMenu.classList.add('hidden');
+        }
+    });
+}
+
+calAptCheckboxes.forEach(cb => cb.addEventListener('change', () => {
+    renderAdminCalendars();
+}));
+
+// Reset Calendar Filter
+const resetCalFilterBtn = document.getElementById('reset-cal-filter-btn');
+if (resetCalFilterBtn) {
+    resetCalFilterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        calAptCheckboxes.forEach(cb => cb.checked = true);
+        renderAdminCalendars();
+    });
+}
+
+function getSelectedCalApts() {
+    const selected = Array.from(calAptCheckboxes).filter(cb => cb.checked).map(cb => parseInt(cb.value));
+    return selected.length > 0 ? selected : adminApartments;
+}
+
 async function loadAdminCalendar() {
-    if (!adminCalendarGrid) return;
-    const aptNumber = 57; // Захардкожено до появления реального выбора апартаментов
-    
-    adminCalendarGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--color-text-secondary);">Загрузка календаря...</div>';
+    const container = document.getElementById('calendars-container');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--color-text-secondary);">Загрузка календарей...</div>';
 
     try {
-        const data = await getCalendar(aptNumber);
-        const blockedIntervals = data.map(item => ({
-            checkIn: new Date(item.check_in + 'T00:00:00'),
-            checkOut: new Date(item.check_out + 'T00:00:00'),
-        }));
-        renderAdminCalendarGrid(blockedIntervals);
+        const responses = await Promise.all(adminApartments.map(apt => getCalendar(apt)));
+        
+        currentBlockedIntervalsByApt = {};
+        for(let i=0; i<adminApartments.length; i++) {
+            const apt = adminApartments[i];
+            const data = responses[i];
+            currentBlockedIntervalsByApt[apt] = data.map(item => ({
+                checkIn: new Date(item.check_in + 'T00:00:00'),
+                checkOut: new Date(item.check_out + 'T00:00:00'),
+            }));
+        }
+        
+        adminCalendarMonthOffsets = { 57: 0, 58: 0, 59: 0, 163: 0, 164: 0 };
+        renderAdminCalendars();
     } catch (error) {
         if (error.message !== 'Session expired') {
-            adminCalendarGrid.innerHTML = `<div style="grid-column: 1 / -1; color: red;">Ошибка: ${error.message}</div>`;
+            container.innerHTML = `<div style="color: red;">Ошибка загрузки календарей: ${error.message}</div>`;
         }
     }
 }
 
-function renderAdminCalendarGrid(blockedIntervals) {
-    adminCalendarGrid.innerHTML = '';
-    
-    // We want to show current month + next 2 months
+function renderAdminCalendars() {
+    const container = document.getElementById('calendars-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const visibleApts = getSelectedCalApts();
+
+    visibleApts.forEach(apt => {
+        // Создаем отдельный белый блок (виджет) для каждого апартамента
+        const widget = document.createElement('div');
+        widget.className = 'calendar-admin-container';
+
+        // Шапка с заголовком и кнопками навигации
+        const header = document.createElement('div');
+        header.style.marginBottom = 'var(--space-4)';
+        header.style.display = 'flex';
+        header.style.alignItems = 'center';
+        header.style.justifyContent = 'space-between';
+
+        const title = document.createElement('h3');
+        title.style.margin = '0';
+        title.style.fontSize = 'var(--font-size-lg)';
+        title.textContent = `Апартаменты №${apt}`;
+
+        const controls = document.createElement('div');
+        controls.className = 'calendar-nav-controls';
+
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'btn-icon';
+        prevBtn.title = 'На месяц назад';
+        prevBtn.innerHTML = '&#10094;';
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn-icon';
+        nextBtn.title = 'На месяц вперед';
+        nextBtn.innerHTML = '&#10095;';
+
+        controls.appendChild(prevBtn);
+        controls.appendChild(nextBtn);
+
+        header.appendChild(title);
+        header.appendChild(controls);
+        widget.appendChild(header);
+
+        // Контейнер самой сетки
+        const grid = document.createElement('div');
+        grid.className = 'calendar-grid-4';
+        widget.appendChild(grid);
+
+        // Привязываем события к кнопкам именно для этого апартамента
+        prevBtn.addEventListener('click', () => {
+            adminCalendarMonthOffsets[apt]--;
+            renderGenericCalendarGrid(grid, apt);
+        });
+        nextBtn.addEventListener('click', () => {
+            adminCalendarMonthOffsets[apt]++;
+            renderGenericCalendarGrid(grid, apt);
+        });
+
+        // Первичный рендер сетки
+        renderGenericCalendarGrid(grid, apt);
+
+        container.appendChild(widget);
+    });
+}
+
+function renderGenericCalendarGrid(gridElement, apt) {
+    const blockedIntervals = currentBlockedIntervalsByApt[apt] || [];
+    gridElement.innerHTML = '';
+
     const today = new Date();
-    // Normalize today to start of day for comparison
     today.setHours(0, 0, 0, 0);
 
     const startYear = today.getFullYear();
-    const startMonth = today.getMonth();
+    const startMonth = today.getMonth() + adminCalendarMonthOffsets[apt];
 
     const monthsRu = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     const weekdaysRu = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -457,26 +739,22 @@ function renderAdminCalendarGrid(blockedIntervals) {
     }
 
     for (let offset = 0; offset < 4; offset++) {
-        // Calculate the month to display (handles year rollover automatically via Date object)
         const displayDate = new Date(startYear, startMonth + offset, 1);
         const y = displayDate.getFullYear();
         const m = displayDate.getMonth();
 
         const daysInMonth = new Date(y, m + 1, 0).getDate();
         let startingDay = new Date(y, m, 1).getDay() - 1;
-        if (startingDay === -1) startingDay = 6; // Make Sunday the 7th day
+        if (startingDay === -1) startingDay = 6; 
 
-        // Create month container
         const monthWrapper = document.createElement('div');
         monthWrapper.className = 'admin-cal-month';
 
-        // Title
         const title = document.createElement('div');
         title.className = 'admin-cal-title';
         title.textContent = `${monthsRu[m]} ${y}`;
         monthWrapper.appendChild(title);
 
-        // Weekdays header
         const weekdaysGrid = document.createElement('div');
         weekdaysGrid.className = 'admin-cal-weekdays';
         weekdaysRu.forEach(dayName => {
@@ -486,18 +764,15 @@ function renderAdminCalendarGrid(blockedIntervals) {
         });
         monthWrapper.appendChild(weekdaysGrid);
 
-        // Days Grid
         const daysGrid = document.createElement('div');
         daysGrid.className = 'admin-cal-days';
 
-        // Empty slots before 1st day
         for (let i = 0; i < startingDay; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'admin-cal-day empty';
             daysGrid.appendChild(emptyCell);
         }
 
-        // Fill days
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('div');
             const cellDate = new Date(y, m, day);
@@ -521,7 +796,7 @@ function renderAdminCalendarGrid(blockedIntervals) {
         }
 
         monthWrapper.appendChild(daysGrid);
-        adminCalendarGrid.appendChild(monthWrapper);
+        gridElement.appendChild(monthWrapper);
     }
 }
 

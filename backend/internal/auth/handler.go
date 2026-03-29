@@ -23,12 +23,16 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ip := middleware.GetClientIP(r)
+
 	accessToken, refreshToken, err := h.service.Login(r.Context(), req.Username, req.Password)
 	if err != nil {
+		middleware.Limiter.RecordFailedLogin(ip)
 		middleware.ErrorResponse(w, http.StatusUnauthorized, "invalid username or password")
 		return
 	}
 
+	middleware.Limiter.ClearFailedLogin(ip)
 	setCookies(w, accessToken, refreshToken)
 	middleware.SuccessResponse(w, http.StatusOK, map[string]string{"message": "login successful"})
 }
@@ -75,7 +79,7 @@ func setCookies(w http.ResponseWriter, access, refresh string) {
 		Expires:  time.Now().Add(15 * time.Minute),
 		HttpOnly: true,
 		Path:     "/",
-		SameSite: http.SameSiteLaxMode, 
+		SameSite: http.SameSiteLaxMode, // Adjust if using cross-origin
 	})
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",

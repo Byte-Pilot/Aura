@@ -62,7 +62,7 @@ func (s *service) CreateBooking(ctx context.Context, req model.BookingRequest) (
 	}
 
 	if checkIn.After(checkOut) || checkIn.Equal(checkOut) {
-		return 0, errors.New("check_in date must be before check_out date")
+		return 0, errors.New("дата заезда должна быть раньше даты выезда")
 	}
 
 	today := time.Now().Truncate(24 * time.Hour)

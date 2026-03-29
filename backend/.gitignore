@@ -1,6 +1,7 @@
 # Env variables
 .env
 .agent
+.idea
 
 # IDEs
 .idea
