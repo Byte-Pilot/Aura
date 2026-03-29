@@ -60,9 +60,56 @@
         <main class="admin-main">
             <!-- Вью: Бронирования -->
             <section id="bookings-view" class="view-section active">
-                <div class="view-header">
+                <div class="view-header view-header-bookings">
                     <h1>Все бронирования</h1>
-                    <button class="btn-secondary" id="refresh-bookings-btn">Обновить</button>
+                    <div class="header-actions">
+                        <div class="search-container" id="booking-search-container">
+                            <button class="search-btn" id="booking-search-btn" title="Поиск">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                            <input type="text" id="booking-search-input" class="search-input" placeholder="Поиск по имени, тел...">
+                        </div>
+                        <div class="filter-dropdown-container">
+                            <button class="btn-secondary" id="toggle-filter-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                </svg>
+                                <span>Фильтр</span>
+                            </button>
+                            <div class="filter-dropdown-menu hidden" id="filter-dropdown-menu">
+                                <div class="filter-group filter-apts" style="flex-wrap: wrap;">
+                                    <div style="width: 100%; font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: 4px;">Апартаменты:</div>
+                                    <label><input type="checkbox" value="57"> 57</label>
+                                    <label><input type="checkbox" value="58"> 58</label>
+                                    <label><input type="checkbox" value="59"> 59</label>
+                                    <label><input type="checkbox" value="163"> 163</label>
+                                    <label><input type="checkbox" value="164"> 164</label>
+                                </div>
+                                <div class="filter-group" style="flex-direction: column; align-items: flex-start;">
+                                    <label style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Даты:</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="date" id="filter-date-from" title="С даты">
+                                        <input type="date" id="filter-date-to" title="По дату">
+                                    </div>
+                                </div>
+                                <div class="filter-group" style="flex-direction: column; align-items: flex-start;">
+                                    <label style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Статус:</label>
+                                    <select id="filter-status" style="width: 100%;">
+                                        <option value="">Все статусы</option>
+                                        <option value="pending">Ожидает</option>
+                                        <option value="confirmed">Подтверждено</option>
+                                        <option value="blocked">Заблокировано</option>
+                                        <option value="cancelled">Отменено</option>
+                                    </select>
+                                </div>
+                                <button id="reset-bookings-filter-btn" style="align-self: flex-end; font-size: var(--font-size-xs); color: var(--color-text-secondary); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">Сбросить</button>
+                            </div>
+                        </div>
+                        <button class="btn-secondary" id="refresh-bookings-btn">Обновить</button>
+                    </div>
                 </div>
 
                 <div class="table-container" style="overflow-x:auto; transform:scaleY(-1);">
@@ -111,7 +158,13 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="block-apt">Апартамент №</label>
-                                <input type="number" id="block-apt" min="1" required>
+                                <select id="block-apt" required>
+                                    <option value="57">57</option>
+                                    <option value="58">58</option>
+                                    <option value="59">59</option>
+                                    <option value="163">163</option>
+                                    <option value="164">164</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="block-from">С</label>
@@ -123,7 +176,7 @@
                             </div>
                         </div>
                         <div id="block-message" class="hidden"></div>
-                        <button type="submit" class="btn-primary">Заблокировать</button>
+                        <button type="submit" class="btn-primary" id="btn-submit-block">Заблокировать</button>
                     </form>
                 </div>
                 <div class="block-form-card" style="margin-top:20px;">
@@ -134,7 +187,13 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="unblock-apt">Апартамент №</label>
-                                <input type="number" id="unblock-apt" min="1" required>
+                                <select id="unblock-apt" required>
+                                    <option value="57">57</option>
+                                    <option value="58">58</option>
+                                    <option value="59">59</option>
+                                    <option value="163">163</option>
+                                    <option value="164">164</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="unblock-from">С</label>
@@ -146,7 +205,7 @@
                             </div>
                         </div>
                         <div id="unblock-message" class="hidden"></div>
-                        <button type="submit" class="btn-primary" style="background-color: #666">Разблокировать</button>
+                        <button type="submit" class="btn-primary" id="btn-submit-unblock">Разблокировать</button>
                     </form>
                 </div>
             </section>
@@ -155,24 +214,36 @@
             <section id="calendar-view" class="view-section hidden">
                 <div class="view-header">
                     <h1>Календарь</h1>
+                    <div class="filter-dropdown-container">
+                        <button class="btn-secondary" id="toggle-cal-filter-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            <span>Фильтр</span>
+                        </button>
+                        <div class="filter-dropdown-menu hidden" id="cal-filter-dropdown-menu">
+                            <div class="filter-group filter-apts" style="flex-wrap: wrap;">
+                                <div style="width: 100%; font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: 4px;">Апартаменты:</div>
+                                <label><input type="checkbox" class="cal-apt-checkbox" value="57" checked> 57</label>
+                                <label><input type="checkbox" class="cal-apt-checkbox" value="58" checked> 58</label>
+                                <label><input type="checkbox" class="cal-apt-checkbox" value="59" checked> 59</label>
+                                <label><input type="checkbox" class="cal-apt-checkbox" value="163" checked> 163</label>
+                                <label><input type="checkbox" class="cal-apt-checkbox" value="164" checked> 164</label>
+                            </div>
+                            <button id="reset-cal-filter-btn" style="align-self: flex-end; font-size: var(--font-size-xs); color: var(--color-text-secondary); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline;">Сбросить</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="calendar-admin-container">
-                    <div
-                        style="margin-bottom: var(--space-4); display: flex; align-items: center; justify-content: space-between;">
-                        <h3 style="margin: 0; font-size: var(--font-size-lg);">Апартаменты №57</h3>
-                        <!-- В будущем здесь можно добавить <select> для выбора апартаментов, если их будет много -->
-                    </div>
-                    <div class="calendar-grid-4" id="admin-calendar-grid">
-                        <!-- Сюда JS сгенерирует 3 месяца -->
-                    </div>
+                <div id="calendars-container" style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Сюда JS сгенерирует блоки .calendar-admin-container -->
                 </div>
             </section>
         </main>
     </div>
 
     <!-- Скрипты -->
-    <script src="./admin.js"></script>
+    <script src="./admin.js?v=5"></script>
 </body>
 
 </html>
