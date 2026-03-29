@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/aura
+            cd ~/aura
             git pull origin main
             export DOCKER_USER=${{ secrets.DOCKER_USER }}
             docker compose pull backend
