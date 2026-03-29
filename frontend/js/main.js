@@ -219,6 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnContinue = document.getElementById('calendar-continue-btn');
 
   if (customDateTrigger && customCalendarPopup) {
+    const bookingForm = document.querySelector('.booking-form');
+    const attrId = bookingForm ? (bookingForm.getAttribute('data-apartment-id') || bookingForm.dataset.apartmentId) : null;
+    const apartmentNumber = attrId ? parseInt(attrId, 10) : 1;
+
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
@@ -226,45 +230,56 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectionStart = null;
     let selectionEnd = null;
 
+    // Blocked intervals loaded from API: [{checkIn: Date, checkOut: Date}]
+    let blockedIntervals = [];
+
     const monthsRu = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     const monthsRuDeclined = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
-    // Example unavailable dates in March 2026 (12-18, 22-24)
-    const blockedDates = [
-      new Date(2026, 2, 12).getTime(),
-      new Date(2026, 2, 13).getTime(),
-      new Date(2026, 2, 14).getTime(),
-      new Date(2026, 2, 15).getTime(),
-      new Date(2026, 2, 16).getTime(),
-      new Date(2026, 2, 17).getTime(),
-      new Date(2026, 2, 18).getTime(),
+    async function fetchCalendar() {
+      try {
+        const res = await fetch(`/api/calendar?apartment_number=${apartmentNumber}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        blockedIntervals = data.map(item => ({
+          checkIn: new Date(item.check_in + 'T00:00:00'),
+          checkOut: new Date(item.check_out + 'T00:00:00'),
+        }));
+        renderCalendar();
+      } catch (e) {
+        // silently fail — calendar still works without backend data
+      }
+    }
 
-      new Date(2026, 2, 22).getTime(),
-      new Date(2026, 2, 23).getTime(),
-      new Date(2026, 2, 24).getTime(),
-    ];
+    function isDateBlocked(cellDate) {
+      const cellTime = cellDate.getTime();
+      return blockedIntervals.some(interval => {
+        return cellTime >= interval.checkIn.getTime() && cellTime < interval.checkOut.getTime();
+      });
+    }
 
-    function isDateBlocked(time) {
-      return blockedDates.includes(time);
+    function isStrictlyBlocked(cellDate) {
+      const cellTime = cellDate.getTime();
+      return blockedIntervals.some(interval => {
+        return cellTime > interval.checkIn.getTime() && cellTime < interval.checkOut.getTime();
+      });
     }
 
     function hasBlockedDatesInRange(start, end) {
       const s = Math.min(start.getTime(), end.getTime());
       const e = Math.max(start.getTime(), end.getTime());
-      for (const time of blockedDates) {
-        if (time >= s && time <= e) return true;
-      }
-      return false;
+      return blockedIntervals.some(interval => {
+        return interval.checkIn.getTime() < e && interval.checkOut.getTime() > s;
+      });
     }
 
     function toggleCalendar() {
       const isOpen = customCalendarPopup.classList.contains('is-open');
-      // simple toggle
       if (isOpen) {
         customCalendarPopup.classList.remove('is-open');
       } else {
         customCalendarPopup.classList.add('is-open');
-        renderCalendar();
+        fetchCalendar();
       }
     }
 
@@ -275,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     customCalendarPopup.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent closing when clicking inside
+      e.stopPropagation();
     });
 
     document.addEventListener('click', () => {
@@ -312,6 +327,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return `${d}.${m}.${y}`;
     }
 
+    function formatYMD(date) {
+      if (!date) return '';
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
     function formatRangeDisplay() {
       if (selectionStart && selectionEnd) {
         const tempStart = new Date(Math.min(selectionStart, selectionEnd));
@@ -325,16 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkinDisplay.textContent = formatDate(tempStart);
         if (checkinDisplay.textContent !== 'Выберите дату') checkinDisplay.style.color = 'var(--color-primary)';
-        checkinInput.value = tempStart.toISOString().split('T')[0];
+        checkinInput.value = formatYMD(tempStart);
 
         checkoutDisplay.textContent = formatDate(tempEnd);
         if (checkoutDisplay.textContent !== 'Выберите дату') checkoutDisplay.style.color = 'var(--color-primary)';
-        checkoutInput.value = tempEnd.toISOString().split('T')[0];
+        checkoutInput.value = formatYMD(tempEnd);
       } else if (selectionStart) {
         calendarSelectedRange.textContent = `${selectionStart.getDate()} ${monthsRuDeclined[selectionStart.getMonth()]} ${selectionStart.getFullYear()} – ...`;
         checkinDisplay.textContent = formatDate(selectionStart);
         checkinDisplay.style.color = 'var(--color-primary)';
-        checkinInput.value = selectionStart.toISOString().split('T')[0];
+        checkinInput.value = formatYMD(selectionStart);
         checkoutDisplay.textContent = 'Выберите дату';
         checkoutDisplay.style.color = 'var(--color-text-secondary)';
         checkoutInput.value = '';
@@ -349,17 +372,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    function handleDayClick(dayDate) {
+    async function checkAvailability(start, end) {
+      const from = formatYMD(start);
+      const to = formatYMD(end);
+      try {
+        const res = await fetch(`/api/availability?from=${from}&to=${to}&apartment_number=${apartmentNumber}`);
+        if (!res.ok) return false;
+        const data = await res.json();
+        return data.available === true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function handleDayClick(dayDate) {
       const selectedTime = dayDate.getTime();
 
       if (!selectionStart || (selectionStart && selectionEnd)) {
-        // Start new selection
+        if (isDateBlocked(dayDate)) return;
         selectionStart = dayDate;
         selectionEnd = null;
       } else {
-        // End selection
         if (selectedTime === selectionStart.getTime()) {
-          // unselect if clicking same day
           selectionStart = null;
         } else {
           const tempEnd = dayDate;
@@ -369,10 +403,17 @@ document.addEventListener('DOMContentLoaded', () => {
             selectionStart = dayDate;
             selectionEnd = null;
           } else {
-            selectionEnd = tempEnd;
-            if (selectionEnd < selectionStart) {
-              selectionStart = selectionEnd;
-              selectionEnd = tempStart;
+            const sortedStart = tempStart < tempEnd ? tempStart : tempEnd;
+            const sortedEnd = tempStart < tempEnd ? tempEnd : tempStart;
+
+            const available = await checkAvailability(sortedStart, sortedEnd);
+            if (!available) {
+              alert('Выбранные даты недоступны. Пожалуйста, выберите другие даты.');
+              selectionStart = null;
+              selectionEnd = null;
+            } else {
+              selectionStart = sortedStart;
+              selectionEnd = sortedEnd;
             }
           }
         }
@@ -389,11 +430,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-      // Adjust for Monday start (0=Monday, 6=Sunday)
       let startingDay = firstDayOfMonth.getDay() - 1;
       if (startingDay === -1) startingDay = 6;
 
-      // Empty cells before start
       for (let i = 0; i < startingDay; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.classList.add('cal-day', 'empty');
@@ -411,52 +450,71 @@ document.addEventListener('DOMContentLoaded', () => {
         const cellDate = new Date(currentYear, currentMonth, i);
         const cellTime = cellDate.getTime();
 
-        // Check if disabled (past dates or blocked dates)
-        const isBlocked = isDateBlocked(cellTime);
+        let isBlocked = isDateBlocked(cellDate);
+        let isHalfBlocked = false;
+
+        if (isBlocked) {
+          if (selectionEnd && cellTime === selectionEnd.getTime()) {
+            isBlocked = false;
+            // if this is the start of a blocked booking, we want it to look half blocked
+            const prevDate = new Date(currentYear, currentMonth, i - 1);
+            if (!isDateBlocked(prevDate)) {
+              isHalfBlocked = true;
+            }
+          } else if (selectionStart && !selectionEnd && cellTime > selectionStart.getTime()) {
+            if (!isStrictlyBlocked(cellDate) && !hasBlockedDatesInRange(selectionStart, cellDate)) {
+              isBlocked = false;
+              // if this is a click-able target on a blocked booking boundary
+              const prevDate = new Date(currentYear, currentMonth, i - 1);
+              if (!isDateBlocked(prevDate)) {
+                isHalfBlocked = true;
+              }
+            }
+          }
+        }
+
         if (cellTime < today.getTime() || isBlocked) {
           dayCell.classList.add('disabled');
           if (isBlocked) {
             dayCell.classList.add('blocked-date');
-
-            const prevDayTime = new Date(currentYear, currentMonth, i - 1).getTime();
-            const nextDayTime = new Date(currentYear, currentMonth, i + 1).getTime();
-
-            if (!isDateBlocked(prevDayTime)) {
-              dayCell.classList.add('blocked-start');
+            const prevDate = new Date(currentYear, currentMonth, i - 1);
+            const nextDate = new Date(currentYear, currentMonth, i + 1);
+            if (!isDateBlocked(prevDate)) {
+              // Only add full blocked-start if it's not a half-blocked scenario
+              if (isBlocked && !isHalfBlocked) {
+                dayCell.classList.add('blocked-start');
+              }
             }
-            if (!isDateBlocked(nextDayTime)) {
-              dayCell.classList.add('blocked-end');
-            }
+            if (!isDateBlocked(nextDate)) dayCell.classList.add('blocked-end');
           }
         } else {
           dayCell.addEventListener('click', () => handleDayClick(cellDate));
 
-          // Selection Highlights
           const isStart = selectionStart && cellTime === selectionStart.getTime();
           const isEnd = selectionEnd && cellTime === selectionEnd.getTime();
           const inRange = selectionStart && selectionEnd && cellTime > selectionStart.getTime() && cellTime < selectionEnd.getTime();
 
-          if (isStart || isEnd) {
-            dayCell.classList.add('selected');
-          }
-          if (inRange) {
-            dayCell.classList.add('in-range');
-          }
-
+          if (isStart || isEnd) dayCell.classList.add('selected');
+          if (inRange) dayCell.classList.add('in-range');
           if (isStart && selectionEnd) dayCell.classList.add('in-range', 'range-start');
           if (isEnd && selectionStart) dayCell.classList.add('in-range', 'range-end');
+
+          if (isHalfBlocked) {
+            dayCell.classList.add('blocked-date');
+            dayCell.classList.add('blocked-start-half');
+            dayCell.classList.remove('blocked-start'); // ensure it doesn't conflict
+          }
         }
 
         calendarDaysGrid.appendChild(dayCell);
       }
     }
 
-    // Initial setup
+    // --- UI Logic ---
     renderCalendar();
-    formatRangeDisplay(); // Fix colors of placeholders
+    formatRangeDisplay();
 
     // === Booking Form Modal Logic ===
-    const bookingForm = document.querySelector('.booking-form');
     const bookingModal = document.getElementById('booking-modal');
     const bookingModalClose = document.getElementById('booking-modal-close');
     const bookingConfirmForm = document.getElementById('booking-confirmation-form');
@@ -471,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         bookingModal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.overflow = 'hidden';
       });
 
       const closeBookingModal = () => {
@@ -496,28 +554,19 @@ document.addEventListener('DOMContentLoaded', () => {
         phoneError.textContent = 'Введите корректный номер телефона';
         phoneInput.parentNode.appendChild(phoneError);
 
-        // Validate on input — clear error as soon as user types
         phoneInput.addEventListener('input', () => {
           phoneInput.classList.remove('input-error');
           phoneError.classList.remove('visible');
         });
 
         function isValidPhone(value) {
-          // Strip everything except digits and leading +
           const digits = value.replace(/\D/g, '');
-          // Russian numbers: 11 digits starting with 7 or 8
-          // International (other countries): 7-15 digits total
-          if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) {
-            return true;
-          }
-          // Other formats: at least 10 digits
-          if (digits.length >= 10 && digits.length <= 15) {
-            return true;
-          }
+          if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) return true;
+          if (digits.length >= 10 && digits.length <= 15) return true;
           return false;
         }
 
-        bookingConfirmForm.addEventListener('submit', (e) => {
+        bookingConfirmForm.addEventListener('submit', async (e) => {
           e.preventDefault();
 
           const phoneVal = phoneInput.value.trim();
@@ -528,20 +577,60 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
 
-          const name = document.getElementById('booking-name').value;
-          alert(`Спасибо, ${name}! Ваша заявка успешно отправлена.`);
-          closeBookingModal();
-          bookingForm.reset();
-          bookingConfirmForm.reset();
-          phoneInput.classList.remove('input-error');
-          phoneError.classList.remove('visible');
+          const submitBtn = bookingConfirmForm.querySelector('button[type="submit"]');
+          const originalBtnText = submitBtn.textContent;
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Отправка...';
 
-          selectionStart = null;
-          selectionEnd = null;
-          formatRangeDisplay();
-          renderCalendar();
+          const payload = {
+            name: document.getElementById('booking-name').value.trim(),
+            phone: phoneVal,
+            email: document.getElementById('booking-email').value.trim(),
+            telegram: document.getElementById('booking-telegram').value.trim(),
+            website: (document.getElementById('booking-website') ? document.getElementById('booking-website').value.trim() : ""),
+            apartment_number: apartmentNumber,
+            check_in: checkinInput.value,
+            check_out: checkoutInput.value,
+          };
+
+          try {
+            const res = await fetch('/api/bookings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+
+            if (res.status === 201) {
+              alert(`Спасибо, ${payload.name}! Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.`);
+              closeBookingModal();
+              bookingForm.reset();
+              bookingConfirmForm.reset();
+              phoneInput.classList.remove('input-error');
+              phoneError.classList.remove('visible');
+              selectionStart = null;
+              selectionEnd = null;
+              formatRangeDisplay();
+              renderCalendar();
+            } else if (res.status === 409) {
+              alert('К сожалению, выбранные даты уже заняты. Пожалуйста, выберите другие даты.');
+              closeBookingModal();
+              selectionStart = null;
+              selectionEnd = null;
+              formatRangeDisplay();
+              renderCalendar();
+            } else {
+              const data = await res.json().catch(() => ({}));
+              alert(`Произошла ошибка: ${data.error || 'Попробуйте позже.'}`);
+            }
+          } catch (err) {
+            alert('Не удалось отправить заявку. Проверьте соединение и попробуйте снова.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+          }
         });
       }
     }
   }
 });
+

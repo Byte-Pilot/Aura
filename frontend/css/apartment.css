@@ -474,18 +474,6 @@
 }
 
 /* --- Custom Calendar Widget --- */
-@keyframes dropdown-appear {
-    from {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .custom-calendar-popup {
     display: flex;
     flex-direction: column;
@@ -658,6 +646,13 @@
     left: 4px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+}
+
+/* New class for when an adjacent check-in date is selected as check-out */
+.cal-day.blocked-start-half::before {
+    left: 50%; /* Only block the right half */
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .cal-day.blocked-end::before {

@@ -87,6 +87,10 @@
     padding-block: var(--space-16);
 }
 
+.pt-section-compact {
+    padding-top: var(--space-12) !important;
+}
+
 .pt-4 {
     padding-top: var(--space-4);
 }
@@ -193,6 +197,10 @@
 @media (min-width: 1280px) {
     .py-section {
         padding-block: var(--space-24);
+    }
+
+    .pt-section-compact {
+        padding-top: calc(var(--space-24) * 0.75) !important;
     }
 }
 
