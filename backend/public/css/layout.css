@@ -1,0 +1,220 @@
+/* css/layout.css */
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.gap-1 {
+    gap: var(--space-1);
+}
+
+.gap-2 {
+    gap: var(--space-2);
+}
+
+.gap-4 {
+    gap: var(--space-4);
+}
+
+.gap-6 {
+    gap: var(--space-6);
+}
+
+.gap-8 {
+    gap: var(--space-8);
+}
+
+.gap-12 {
+    gap: var(--space-12);
+}
+
+.w-full {
+    width: 100%;
+}
+
+/* Sections */
+.pt-section {
+    padding-top: var(--space-16);
+}
+
+.pb-section {
+    padding-bottom: var(--space-16);
+}
+
+.py-section {
+    padding-block: var(--space-16);
+}
+
+.pt-section-compact {
+    padding-top: var(--space-10) !important;
+}
+
+.pt-4 {
+    padding-top: var(--space-4);
+}
+
+.pt-6 {
+    padding-top: var(--space-6);
+}
+
+.pt-8 {
+    padding-top: var(--space-8);
+}
+
+.pt-12 {
+    padding-top: var(--space-12);
+}
+
+/* Spacing Helpers */
+.mt-auto {
+    margin-top: auto;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-2 {
+    margin-bottom: var(--space-2);
+}
+
+.mb-4 {
+    margin-bottom: var(--space-4);
+}
+
+.mb-6 {
+    margin-bottom: var(--space-6);
+}
+
+.mb-8 {
+    margin-bottom: var(--space-8);
+}
+
+.mt-2 {
+    margin-top: var(--space-2);
+}
+
+.mt-4 {
+    margin-top: var(--space-4);
+}
+
+.mt-6 {
+    margin-top: var(--space-6);
+}
+
+.mt-8 {
+    margin-top: var(--space-8);
+}
+
+.mt-12 {
+    margin-top: var(--space-12);
+}
+
+/* Header Layout */
+.site-header {
+    padding-block: var(--space-4);
+    position: sticky;
+    top: 0;
+    background-color: var(--color-background);
+    z-index: 100;
+}
+
+@media (min-width: 1024px) {
+    .site-header {
+        padding-block: var(--space-6);
+    }
+}
+
+.nav-links {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .nav-links {
+        display: flex;
+        gap: var(--space-8);
+        align-items: center;
+    }
+}
+
+/* Hero Section Utilities */
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: flex-end;
+}
+
+@media (min-width: 1024px) {
+    .hero-grid {
+        grid-template-columns: 1fr 1.1fr;
+        gap: var(--space-16);
+    }
+}
+
+@media (min-width: 1280px) {
+    .py-section {
+        padding-block: var(--space-24);
+    }
+
+    .pt-section-compact {
+        padding-top: calc(var(--space-24) * 0.75) !important;
+    }
+}
+
+/* Card Section Utilities */
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+    .card-grid {
+        /* Matches exactly 4 columns layout: image, title/desc, details, amenities/booking */
+        grid-template-columns: 320px minmax(250px, 1.2fr) minmax(220px, 1fr) minmax(220px, 1fr);
+        gap: var(--space-8);
+    }
+}

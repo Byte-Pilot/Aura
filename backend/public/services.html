@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Услуги — AURA Апарт-отель в Алуште</title>
+    <meta name="description"
+        content="Дополнительные услуги апарт-отеля AURA в Алуште: трансфер, доставка, сюрпризы и экскурсии по Крыму.">
+
+    <!-- Styling Foundation -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Temporary SVG Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E">
+
+
+</head>
+
+<body>
+
+    <!-- === HEADER (same as index.html) === -->
+    <header class="site-header">
+        <div class="container flex justify-between items-center">
+
+            <!-- Brand Logo -->
+            <a href="index.html#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                </svg>
+                <span
+                    style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav-links">
+                <a href="index.html#hero">Главная</a>
+                <a href="index.html#apartments">Апартаменты</a>
+                <a href="index.html#about">О комплексе</a>
+                <a href="index.html#location">Расположение</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown__trigger flex items-center gap-1" aria-expanded="false"
+                        aria-haspopup="true">Еще
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu" role="menu">
+                        <a href="services.html" class="nav-dropdown__item active" role="menuitem">Услуги</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+                        <a href="rules.html" class="nav-dropdown__item" role="menuitem">Правила проживания</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Auth and Actions -->
+            <div class="flex items-center gap-4">
+                <a href="#login" class="btn-ghost" style="display: none;">Личный кабинет</a>
+                <a href="contact.html" class="btn btn-primary">Связаться</a>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="nav-dropdown mobile-nav-dropdown" style="display: none;">
+                    <button class="mobile-menu-btn nav-dropdown__trigger" aria-expanded="false"
+                        aria-label="Toggle navigation menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown__menu mobile-nav-menu" role="menu">
+                        <a href="index.html#hero" class="nav-dropdown__item" role="menuitem">Главная</a>
+                        <a href="index.html#apartments" class="nav-dropdown__item" role="menuitem">Апартаменты</a>
+                        <a href="index.html#about" class="nav-dropdown__item" role="menuitem">О комплексе</a>
+                        <a href="index.html#location" class="nav-dropdown__item" role="menuitem">Расположение</a>
+                        <a href="services.html" class="nav-dropdown__item active" role="menuitem">Услуги</a>
+                        <a href="#" class="nav-dropdown__item" role="menuitem">Полезная информация</a>
+                        <a href="rules.html" class="nav-dropdown__item" role="menuitem">Правила проживания</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <!-- === SERVICES PAGE CONTENT === -->
+        <section class="services-section">
+            <div class="container">
+
+                <!-- Hero text -->
+                <div class="services-hero">
+                    <h1>Наши услуги</h1>
+                    <p>Мы позаботимся о каждой детали вашего отдыха — от встречи в аэропорту до незабываемых впечатлений
+                        по всему Крыму.</p>
+                </div>
+
+                <!-- Cards -->
+                <div class="services-grid">
+
+                    <!-- ── Card 1: Трансфер ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g fill="none">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="4"
+                                        d="M37 28.392v7.015C37 39.048 34.089 42 30.497 42s-6.503-2.952-6.503-6.593l.012-22.264C24.006 9.198 21.095 6 17.503 6S11 9.198 11 13.143v15.25" />
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="4"
+                                        d="m43 31l-6-6l-6 6m12-20.273C43 15.182 37 19 37 19s-6-3.818-6-8.273c0-1.519.632-2.975 1.757-4.05A6.15 6.15 0 0 1 37 5a6.15 6.15 0 0 1 4.243 1.677A5.6 5.6 0 0 1 43 10.727m-26 24C17 39.182 11 43 11 43s-6-3.818-6-8.273c0-1.519.632-2.975 1.757-4.05A6.15 6.15 0 0 1 11 29a6.15 6.15 0 0 1 4.243 1.677A5.6 5.6 0 0 1 17 34.728" />
+                                    <circle cx="37" cy="11" r="2" fill="currentColor" />
+                                    <circle cx="11" cy="35" r="2" fill="currentColor" />
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Трансфер</h2>
+                            <p>Комфортная поездка от Симферополя прямо к апартаментам. Стоимость 4000 ₽. Вас встретят
+                                на
+                                месте и сопроводят до самой двери.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 2: Доставка ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 14 14">
+                                <path fill="currentColor" fill-rule="evenodd"
+                                    d="M1.625 2.25a.375.375 0 0 0-.375.375v7.25c0 .207.168.375.375.375H2q.03 0 .059.003a1.751 1.751 0 0 1 3.024.247h3.333A1.76 1.76 0 0 1 9 9.81V2.626a.375.375 0 0 0-.375-.375zM10 7.625v1.873a1.75 1.75 0 0 1 1.437.752h.938a.375.375 0 0 0 .375-.375v-2.25zM3.499 13c.882 0 1.611-.652 1.733-1.5h3.034a1.752 1.752 0 0 0 3.466 0h.643c.898 0 1.625-.727 1.625-1.625v-2.9a.62.62 0 0 0-.135-.363l-1.141-2.283a1.5 1.5 0 0 0-1.342-.829H10.25v-.875C10.25 1.728 9.522 1 8.625 1h-7C.728 1 0 1.728 0 2.625v7.25c0 .898.728 1.625 1.625 1.625h.14c.123.848.852 1.5 1.734 1.5"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Доставка</h2>
+                            <p>Мы привезём цветы или подарки прямо к вашему номеру, чтобы отдых был по-настоящему
+                                беззаботным.</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 3: Женщина из торта ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
+                                <path fill="#ff7043"
+                                    d="M16 10a2.847 2.847 0 0 0 3-2.663v-.003a2.32 2.32 0 0 0-.435-1.372L16 2l-2.565 3.96A2.33 2.33 0 0 0 13 7.331A2.847 2.847 0 0 0 15.998 10zm6.134 13.376L20.708 22l-1.44 1.375a4.917 4.917 0 0 1-6.52 0L11.334 22l-1.466 1.375A4.79 4.79 0 0 1 4 23.871V29a1 1 0 0 0 1 1h22a1 1 0 0 0 1-1v-5.129a4.79 4.79 0 0 1-5.866-.497M24 14h-6.667v-2h-2.666v2H8a4.145 4.145 0 0 0-4 4.09v1.415A2.56 2.56 0 0 0 6.614 22a2.53 2.53 0 0 0 1.84-.726l2.88-2.71l2.813 2.71a2.764 2.764 0 0 0 3.693 0l2.826-2.71l2.868 2.71A2.649 2.649 0 0 0 28 19.505V18.09A4.145 4.145 0 0 0 24 14" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Женщина из торта</h2>
+                            <p>Незабываемый сюрприз для особых случаев: праздник начинается с яркой и оригинальной
+                                подачи!</p>
+                        </div>
+                    </div>
+
+                    <!-- ── Card 4: Экскурсии по Крыму ── -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M19.3 16.9c.4-.7.7-1.5.7-2.4c0-2.5-2-4.5-4.5-4.5S11 12 11 14.5s2 4.5 4.5 4.5c.9 0 1.7-.3 2.4-.7l3.2 3.2l1.4-1.4zm-3.8.1c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5M12 20v2C6.48 22 2 17.52 2 12S6.48 2 12 2c4.84 0 8.87 3.44 9.8 8h-2.07A8 8 0 0 0 15 4.59V5c0 1.1-.9 2-2 2h-2v2c0 .55-.45 1-1 1H8v2h2v3H9l-4.79-4.79C4.08 10.79 4 11.38 4 12c0 4.41 3.59 8 8 8" />
+                            </svg>
+                        </div>
+                        <div class="service-card__body">
+                            <h2>Экскурсии по Крыму</h2>
+                            <p>Откройте живописные уголки Крыма с комфортом — от горных троп до морских бухт.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- === FOOTER === -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+
+            <!-- Brand & Desc -->
+            <div class="footer-brand">
+                <a href="index.html#hero" class="logo flex items-center gap-2" aria-label="AURA Homepage">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 4L2 11H5V20H10V15H14V20H19V11H22L13.5 4H10.5Z" fill="currentColor" />
+                    </svg>
+                    <span
+                        style="font-family: var(--font-family-heading); font-weight: 700; font-size: var(--font-size-xl);">AURA</span>
+                </a>
+                <p class="footer-desc mt-4">
+                    Забронируйте идеальные апартаменты для отдыха в Алуште в комплексе Аура. Комфортные номера у моря
+                    напрямую от собственника.
+                </p>
+                <div class="footer-socials mt-6">
+                    <a href="https://t.me/" target="_blank" aria-label="Telegram" class="footer-social-icon">
+                        <img src="assets/icony/telegram.png" alt="Telegram"
+                            style="width: 32px; height: 32px; object-fit: contain;">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Column 1 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">НАВИГАЦИЯ</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#about">О комплексе</a></li>
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="contact.html">Контакты</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="footer-links-col">
+                <h4 class="footer-col-title">ДОКУМЕНТЫ</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">Политика конфиденциальности</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Апарт-отель «Aura». Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+    <!-- Responsive fixes (same as index.html) -->
+    <style>
+        @media (min-width: 768px) {
+            .btn-ghost[href="#login"] {
+                display: inline-flex !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .mobile-nav-dropdown {
+                display: inline-flex !important;
+            }
+        }
+    </style>
+</body>
+
+</html>
