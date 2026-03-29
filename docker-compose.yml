@@ -44,7 +44,7 @@ services:
         max-size: "30m"
         max-file: "5"
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "api" ]
+      test: [ "CMD", "pg_isready", "-U", "api", "-d", "aura" ]
       interval: 5s
       timeout: 5s
       retries: 5
