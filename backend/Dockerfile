@@ -19,6 +19,7 @@ RUN adduser -D appuser
 
 COPY --from=builder /app/main .
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/internal/db/init_db.sql ./internal/db/init_db.sql
 
 USER appuser
 

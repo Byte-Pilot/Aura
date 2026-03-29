@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,4 +44,4 @@ jobs:
             git pull origin main
             export DOCKER_USER=${{ secrets.DOCKER_USER }}
             docker compose pull backend
-            docker compose up -d --remove-orphans
+            docker compose up -d --remove-orphans nginx backend

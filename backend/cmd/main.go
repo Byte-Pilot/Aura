@@ -39,6 +39,11 @@ func main() {
 		log.Println("OK Connected to DB")
 	}
 
+	err = db.InitDB(context.Background(), conn, "internal/db/init_db.sql")
+	if err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
+	}
+
 	bookingsRepo := bookings.NewRepository(conn)
 	bookingsService := bookings.NewService(bookingsRepo)
 	bookingsHandler := bookings.NewHandler(bookingsService)
