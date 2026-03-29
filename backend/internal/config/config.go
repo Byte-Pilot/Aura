@@ -22,11 +22,13 @@ func Load() *Config {
 
 	jwtAccessSecret := os.Getenv("JWT_ACCESS_SECRET")
 	if jwtAccessSecret == "" {
+		log.Println("WARNING: JWT_ACCESS_SECRET is not set, using default insecure key")
 		jwtAccessSecret = "aura_super_secret_jwt_key_99123"
 	}
 
 	jwtRefreshSecret := os.Getenv("JWT_REFRESH_SECRET")
 	if jwtRefreshSecret == "" {
+		log.Println("WARNING: JWT_REFRESH_SECRET is not set, using default insecure key")
 		jwtRefreshSecret = "aura_super_secret_refresh_key_99123"
 	}
 
