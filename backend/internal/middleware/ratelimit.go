@@ -125,9 +125,9 @@ func (rl *RateLimiter) LimitBookings(next http.Handler) http.Handler {
 
 		tracker.lastSeen = now
 
-		if tracker.count >= 5 {
+		if tracker.count >= 2 {
 			rl.bookingMu.Unlock()
-			ErrorResponse(w, http.StatusTooManyRequests, "Превышен лимит заявок (5 в день). Попробуйте завтра.")
+			ErrorResponse(w, http.StatusTooManyRequests, "Превышен лимит заявок (2 в день). Попробуйте завтра или свяжитесь с нами, нажав 'Связаться' в правом верхнем углу.")
 			return
 		}
 

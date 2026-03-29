@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (cellTime < today.getTime() || isBlocked || cellTime > maxDate.getTime()) {
           dayCell.classList.add('disabled');
-          if (isBlocked) {
+          if (isBlocked && cellTime >= today.getTime()) {
             dayCell.classList.add('blocked-date');
             const prevDate = new Date(currentYear, currentMonth, i - 1);
             const nextDate = new Date(currentYear, currentMonth, i + 1);
