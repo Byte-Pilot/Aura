@@ -50,7 +50,7 @@ type BookingRequest struct {
 	ApartmentNumber int    `json:"apartment_number"`
 	CheckIn         string `json:"check_in"`
 	CheckOut        string `json:"check_out"`
-	Website         string `json:"website"` // Honeypot field for bots
+	Website         string `json:"website"`
 }
 
 type CalendarResponse struct {

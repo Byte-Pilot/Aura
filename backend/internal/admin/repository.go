@@ -115,7 +115,6 @@ func (r *repository) CreateBlock(ctx context.Context, b model.Booking) error {
 		INSERT INTO bookings (name, phone, email, apartment_number, check_in, check_out, status)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
-	// "name", "phone" and "email" are required in db, we can put "Admin" or "N/A"
 	_, err = r.db.Exec(ctx, queryInsert, "Admin", "N/A", "Admin", b.ApartmentNumber, b.CheckIn, b.CheckOut, model.StatusBlocked)
 	return err
 }

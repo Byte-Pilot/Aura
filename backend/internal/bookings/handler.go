@@ -47,8 +47,7 @@ func (h *Handler) CreateBooking(w http.ResponseWriter, r *http.Request) {
 		middleware.ErrorResponse(w, http.StatusBadRequest, "invalid request format")
 		return
 	}
-
-	// Honeypot check: if filled, it's a bot. Silently drop.
+  
 	if req.Website != "" {
 		middleware.SuccessResponse(w, http.StatusCreated, map[string]interface{}{
 			"message": "booking created successfully",

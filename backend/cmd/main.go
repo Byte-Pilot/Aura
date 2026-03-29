@@ -75,9 +75,3 @@ func main() {
 
 	log.Println("Successful server stop")
 }
-
-/*func main() {
-	hash, _ := bcrypt.GenerateFromPassword([]byte("DctPf,hjybhjdfyj$"), 12)
-	fmt.Println(string(hash))
-}
-*/
