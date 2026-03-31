@@ -42,17 +42,27 @@
     <!-- ОСНОВНОЙ СОДЕРЖИМОЕ АДМИНКИ -->
     <div id="admin-container" class="admin-container hidden">
         <!-- БОКОВОЕ МЕНЮ -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-logo">
-                Aura Admin
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    Aura Admin
+                </div>
+                <button id="mobile-nav-toggle" class="mobile-nav-toggle">
+                    <span id="current-nav-label">Заявки</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
             </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-target="bookings-view">Заявки</a>
-                <a href="#" class="nav-item" data-target="calendar-view">Календарь</a>
-                <a href="#" class="nav-item" data-target="block-dates-view">Блокировка дат</a>
-            </nav>
-            <div class="sidebar-footer">
-                <button id="logout-btn" class="btn-secondary">Выйти</button>
+            <div class="sidebar-content" id="sidebar-content">
+                <nav class="sidebar-nav" id="sidebar-nav">
+                    <a href="#" class="nav-item active" data-target="bookings-view">Заявки</a>
+                    <a href="#" class="nav-item" data-target="calendar-view">Календарь</a>
+                    <a href="#" class="nav-item" data-target="block-dates-view">Блокировка дат</a>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="logout-btn" class="btn-secondary">Выйти</button>
+                </div>
             </div>
         </aside>
 

@@ -131,6 +131,10 @@ const loginForm = document.getElementById('login-form');
 const loginError = document.getElementById('login-error');
 const logoutBtn = document.getElementById('logout-btn');
 
+const adminSidebar = document.getElementById('admin-sidebar');
+const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+const currentNavLabel = document.getElementById('current-nav-label');
+
 const navItems = document.querySelectorAll('.nav-item');
 const viewSections = document.querySelectorAll('.view-section');
 
@@ -172,10 +176,19 @@ function switchView(targetId) {
     navItems.forEach(item => {
         if (item.getAttribute('data-target') === targetId) {
             item.classList.add('active');
+            // Update mobile label
+            if (currentNavLabel) {
+                currentNavLabel.textContent = item.textContent;
+            }
         } else {
             item.classList.remove('active');
         }
     });
+
+    // Close mobile menu
+    if (adminSidebar) {
+        adminSidebar.classList.remove('is-open');
+    }
 
     // Update section active state
     viewSections.forEach(section => {
@@ -248,6 +261,22 @@ loginForm.addEventListener('submit', async (e) => {
 logoutBtn.addEventListener('click', () => {
     handleLogoutAction();
 });
+
+// Mobile Nav Toggle
+if (mobileNavToggle && adminSidebar) {
+    mobileNavToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        adminSidebar.classList.toggle('is-open');
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+        if (adminSidebar.classList.contains('is-open') && 
+            !adminSidebar.contains(e.target)) {
+            adminSidebar.classList.remove('is-open');
+        }
+    });
+}
 
 // Refresh Bookings
 refreshBookingsBtn.addEventListener('click', () => {
