@@ -516,6 +516,27 @@ function formatStatus(status) {
 }
 
 // Global action handlers for table inline buttons
+window.copyToClipboard = function(text, element, e) {
+    if (e) e.stopPropagation();
+    if (!text) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+        const badge = document.createElement('div');
+        badge.className = 'copy-badge';
+        badge.textContent = 'Скопировано!';
+        
+        const rect = element.getBoundingClientRect();
+        badge.style.left = `${rect.left + window.scrollX + rect.width / 2 - 40}px`;
+        badge.style.top = `${rect.top + window.scrollY - 25}px`;
+        
+        document.body.appendChild(badge);
+        
+        setTimeout(() => {
+            if (document.body.contains(badge)) document.body.removeChild(badge);
+        }, 1000);
+    }).catch(err => console.error('Ошибка копирования', err));
+};
+
 window.handleStatusChange = async function (id, newStatus) {
     if (!confirm(`Вы уверены, что хотите изменить статус брони #${id} на "${formatStatus(newStatus)}"?`)) return;
     try {
@@ -597,9 +618,9 @@ function renderBookingsTable(bookings) {
             <td>${b.apartment_number}</td>
             <td title="${b.name || ''}">${truncate(b.name)}</td>
             <td>
-                <div title="${b.phone || ''}">tel: ${truncate(b.phone, 20)}</div>
-                <div style="color:var(--color-text-secondary);font-size:0.8em" title="${b.telegram || ''}">tg: ${truncate(b.telegram, 20)}</div>
-                <div style="color:var(--color-text-secondary);font-size:0.8em" title="${b.email || ''}">email: ${truncate(b.email, 20)}</div>
+                <div title="${b.phone || ''}">tel: <span class="copyable" onclick="window.copyToClipboard('${b.phone || ''}', this, event)">${truncate(b.phone, 20)}</span></div>
+                <div style="color:var(--color-text-secondary);font-size:0.8em" title="${b.telegram || ''}">tg: <span class="copyable" onclick="window.copyToClipboard('${b.telegram || ''}', this, event)">${truncate(b.telegram, 20)}</span></div>
+                <div style="color:var(--color-text-secondary);font-size:0.8em" title="${b.email || ''}">email: <span class="copyable" onclick="window.copyToClipboard('${b.email || ''}', this, event)">${truncate(b.email, 20)}</span></div>
             </td>
             <td>${formatDate(b.check_in)} — ${formatDate(b.check_out)}</td>
             <td><span class="status-badge status-${b.status}">${formatStatus(b.status)}</span></td>

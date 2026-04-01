@@ -739,3 +739,72 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- Copy to Clipboard --- */
+.copyable {
+    cursor: pointer;
+    position: relative;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+    padding: 0 4px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+.copyable:hover {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+}
+
+.copyable::after {
+    content: 'Скопировать';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+    margin-bottom: 4px;
+}
+
+.copyable:hover::after {
+    opacity: 1;
+}
+
+.copy-badge {
+    position: absolute;
+    background-color: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 1000;
+    animation: fadeOutUp 1s ease forwards;
+}
+
+@keyframes fadeOutUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
