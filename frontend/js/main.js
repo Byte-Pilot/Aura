@@ -585,7 +585,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function isValidPhone(value) {
           const digits = value.replace(/\D/g, '');
-          if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) return true;
+          if (digits.length > 0 && (digits[0] === '7' || digits[0] === '8')) {
+            return digits.length === 11;
+          }
           if (digits.length >= 10 && digits.length <= 15) return true;
           return false;
         }
