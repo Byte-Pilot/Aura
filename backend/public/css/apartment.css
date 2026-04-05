@@ -629,6 +629,7 @@
 
 .cal-day.blocked-date {
     color: #888888;
+    background-color: transparent;
     z-index: 2;
     position: relative;
 }

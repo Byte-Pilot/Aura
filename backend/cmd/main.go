@@ -28,20 +28,20 @@ func main() {
 
 	conn, err := db.ConnectPostgres(conf.DatabaseURL)
 	if err != nil {
-		log.Fatalf("Failed to cnnect to DB: %v\n", err)
+		log.Println("Failed to cnnect to DB: %w\n", err)
 	}
 	defer conn.Close()
 
 	err = conn.Ping(context.Background())
 	if err != nil {
-		log.Fatalf("Database ping failed: %v", err)
+		log.Println("Database ping failed: %w", err)
 	} else {
 		log.Println("OK Connected to DB")
 	}
 
 	err = db.InitDB(context.Background(), conn, "internal/db/init_db.sql")
 	if err != nil {
-		log.Fatalf("Database initialization failed: %v", err)
+		log.Println("Database initialization failed: %w", err)
 	}
 
 	bookingsRepo := bookings.NewRepository(conn)
